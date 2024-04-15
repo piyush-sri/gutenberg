@@ -156,8 +156,8 @@ class WP_Theme_JSON_Gutenberg {
 			'use_default_names' => false,
 			'value_key'         => 'gradient',
 			'css_vars'          => '--wp--preset--gradient--$slug',
-			'classes'           => array( '.has-$slug-gradient-background' => 'background' ),
-			'properties'        => array( 'background' ),
+			'classes'           => array( '.has-$slug-gradient-background' => 'background-image' ),
+			'properties'        => array( 'background-image' ),
 		),
 		array(
 			'path'              => array( 'color', 'duotone' ),
@@ -228,9 +228,11 @@ class WP_Theme_JSON_Gutenberg {
 	 */
 	const PROPERTIES_METADATA = array(
 		'aspect-ratio'                      => array( 'dimensions', 'aspectRatio' ),
-		'background'                        => array( 'color', 'gradient' ),
 		'background-color'                  => array( 'color', 'background' ),
-		'background-image'                  => array( 'background', 'backgroundImage' ),
+		'background-image'                  => array(
+			array( 'color', 'gradient' ),
+			array( 'background', 'backgroundImage' ),
+		),
 		'background-position'               => array( 'background', 'backgroundPosition' ),
 		'background-repeat'                 => array( 'background', 'backgroundRepeat' ),
 		'background-size'                   => array( 'background', 'backgroundSize' ),
@@ -2275,8 +2277,26 @@ class WP_Theme_JSON_Gutenberg {
 		$root_variable_duplicates = array();
 
 		foreach ( $properties as $css_property => $value_path ) {
-			$value = static::get_property_value( $styles, $value_path, $theme_json );
-
+			// @TODO how to deal with multiple values that need to be combined?
+			// background-image: linear-gradient(to right, red, blue), url('foo.png');
+			// Background images don't support opacity yet officially put it after gradient values.
+			// Needs to be handled before the first is_array check below.
+			// Needs to be handled after background styles processing so we get the url value.
+			if ( is_array( $value_path ) && is_array( $value_path[0] ) ) {
+				$combined_values = array();
+				foreach ( $value_path as $value_path_part ) {
+					$sub_value = static::get_property_value( $styles, $value_path_part, $theme_json );
+					// Processes background styles.
+					if ( 'background' === $value_path_part[0] && isset( $styles['background'] ) ) {
+						$background_styles = gutenberg_style_engine_get_styles( array( 'background' => $styles['background'] ) );
+						$sub_value         = $background_styles['declarations'][ $css_property ] ?? $sub_value;
+					}
+					$combined_values[] = $sub_value;
+				}
+				$value = ! empty( $combined_values ) ? implode( ', ', $combined_values ) : static::get_property_value( $styles, $value_path, $theme_json );
+			} else {
+				$value = static::get_property_value( $styles, $value_path, $theme_json );
+			}
 			if ( str_starts_with( $css_property, '--wp--style--root--' ) && ( static::ROOT_BLOCK_SELECTOR !== $selector || ! $use_root_padding ) ) {
 				continue;
 			}
@@ -2292,7 +2312,7 @@ class WP_Theme_JSON_Gutenberg {
 
 			// Look up protected properties, keyed by value path.
 			// Skip protected properties that are explicitly set to `null`.
-			if ( is_array( $value_path ) ) {
+			if ( is_array( $value_path ) && ! is_array( $value_path[0] ) ) {
 				$path_string = implode( '.', $value_path );
 				if (
 					isset( static::PROTECTED_PROPERTIES[ $path_string ] ) &&
@@ -2300,12 +2320,6 @@ class WP_Theme_JSON_Gutenberg {
 				) {
 					continue;
 				}
-			}
-
-			// Processes background styles.
-			if ( 'background' === $value_path[0] && isset( $styles['background'] ) ) {
-				$background_styles = gutenberg_style_engine_get_styles( array( 'background' => $styles['background'] ) );
-				$value             = $background_styles['declarations'][ $css_property ] ?? $value;
 			}
 
 			// Skip if empty and not "0" or value represents array of longhand values.
