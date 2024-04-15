@@ -2281,7 +2281,10 @@ class WP_Theme_JSON_Gutenberg {
 			// background-image: linear-gradient(to right, red, blue), url('foo.png');
 			// Background images don't support opacity yet officially put it after gradient values.
 			// Needs to be handled before the first is_array check below.
-			// Needs to be handled after background styles processing so we get the url value.
+			// Needs to be handled in conjunctions with background styles processing so we get the url value.
+			// This is a placeholder for now - let's abstract this out later.
+			// It's very specific to the `background-image` property, so maybe it can be handled in a separate function in background block supports?
+			// Or value_func like presets? Or in the style engine.
 			if ( is_array( $value_path ) && is_array( $value_path[0] ) ) {
 				$combined_values = array();
 				foreach ( $value_path as $value_path_part ) {
