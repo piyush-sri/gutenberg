@@ -423,6 +423,22 @@ if ( ! class_exists( 'WP_Style_Engine' ) ) {
 				}
 			}
 
+			// @TODO revisit this logic. Standardize it in some way.
+			if ( ! empty( $parsed_styles['declarations'] ) ) {
+
+				$background_value = '';
+				if ( isset( $parsed_styles['declarations']['background'] ) ) {
+					$background_value = $parsed_styles['declarations']['background']. ', ';
+					unset( $parsed_styles['declarations']['background'] );
+				}
+				if ( isset( $parsed_styles['declarations']['background-image'] ) ) {
+					$parsed_styles['declarations']['background-image'] = $background_value . $parsed_styles['declarations']['background-image'];
+
+				} else {
+					$parsed_styles['declarations']['background-image'] = $background_value;
+				}
+			}
+
 			return $parsed_styles;
 		}
 

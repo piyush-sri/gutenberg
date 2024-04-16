@@ -40,33 +40,47 @@ function gutenberg_register_background_support( $block_type ) {
  * @return string                Filtered block content.
  */
 function gutenberg_render_background_support( $block_content, $block ) {
-	$block_type                   = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
-	$block_attributes             = ( isset( $block['attrs'] ) && is_array( $block['attrs'] ) ) ? $block['attrs'] : array();
-	$has_background_image_support = block_has_support( $block_type, array( 'background', 'backgroundImage' ), false );
+	$block_type                      = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
+	$block_attributes                = ( isset( $block['attrs'] ) && is_array( $block['attrs'] ) ) ? $block['attrs'] : array();
+	$has_background_image_support    = block_has_support( $block_type, array( 'background', 'backgroundImage' ), false );
+	$has_background_gradient_support = block_has_support( $block_type, array( 'color', 'gradients' ), false );
 
+
+	$background_styles  = array();
 	if (
 		! $has_background_image_support ||
 		wp_should_skip_block_supports_serialization( $block_type, 'background', 'backgroundImage' ) ||
-		! isset( $block_attributes['style']['background'] )
+		! empty( $block_attributes['style']['background']['backgroundImage'] )
+	) {
+		$background_styles['backgroundSize']  = isset( $block_attributes['style']['background']['backgroundSize'] ) ? $block_attributes['style']['background']['backgroundSize'] : 'cover';
+		$background_styles['backgroundImage'] = isset( $block_attributes['style']['background']['backgroundImage'] ) ? $block_attributes['style']['background']['backgroundImage'] : array();
+
+		if ( isset( $background_styles['backgroundImage']['source'] ) && 'file' === $background_styles['backgroundImage']['source'] && isset( $background_styles['backgroundImage']['url'] ) ) {
+			$background_styles['backgroundPosition'] = isset( $block_attributes['style']['background']['backgroundPosition'] ) ? $block_attributes['style']['background']['backgroundPosition'] : null;
+			$background_styles['backgroundRepeat']   = isset( $block_attributes['style']['background']['backgroundRepeat'] ) ? $block_attributes['style']['background']['backgroundRepeat'] : null;
+
+			// If the background size is set to `contain` and no position is set, set the position to `center`.
+			if ( 'contain' === $background_styles['backgroundSize'] && ! $background_styles['backgroundPosition'] ) {
+				$background_styles['backgroundPosition'] = 'center';
+			}
+		}
+	}
+
+	$background_gradient_styles = array();
+	if ( $has_background_gradient_support && ! wp_should_skip_block_supports_serialization( $block_type, 'color', 'gradients' ) ) {
+		$preset_gradient_color             = array_key_exists( 'gradient', $block_attributes ) ? "var:preset|gradient|{$block_attributes['gradient']}" : null;
+		$custom_gradient_color             = $block_attributes['style']['color']['gradient'] ?? null;
+		$background_gradient_styles['gradient'] = $preset_gradient_color ?: $custom_gradient_color;
+	}
+
+	if (
+		empty( $background_styles ) &&
+		empty( $background_gradient_styles )
 	) {
 		return $block_content;
 	}
 
-	$background_styles                    = array();
-	$background_styles['backgroundImage'] = isset( $block_attributes['style']['background']['backgroundImage'] ) ? $block_attributes['style']['background']['backgroundImage'] : array();
-
-	if ( ! empty( $background_styles['backgroundImage'] ) ) {
-		$background_styles['backgroundSize']     = isset( $block_attributes['style']['background']['backgroundSize'] ) ? $block_attributes['style']['background']['backgroundSize'] : 'cover';
-		$background_styles['backgroundPosition'] = isset( $block_attributes['style']['background']['backgroundPosition'] ) ? $block_attributes['style']['background']['backgroundPosition'] : null;
-		$background_styles['backgroundRepeat']   = isset( $block_attributes['style']['background']['backgroundRepeat'] ) ? $block_attributes['style']['background']['backgroundRepeat'] : null;
-
-		// If the background size is set to `contain` and no position is set, set the position to `center`.
-		if ( 'contain' === $background_styles['backgroundSize'] && ! $background_styles['backgroundPosition'] ) {
-			$background_styles['backgroundPosition'] = 'center';
-		}
-	}
-
-	$styles = gutenberg_style_engine_get_styles( array( 'background' => $background_styles ) );
+	$styles = gutenberg_style_engine_get_styles( array( 'background' => $background_styles, 'color' => $background_gradient_styles ), array( 'convert_vars_to_classnames' => true ) );
 
 	if ( ! empty( $styles['css'] ) ) {
 		// Inject background styles to the first element, presuming it's the wrapper, if it exists.
@@ -85,7 +99,9 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 			$updated_style .= $styles['css'];
 			$tags->set_attribute( 'style', $updated_style );
-			$tags->add_class( 'has-background' );
+			if ( ! empty( $styles['classnames'] ) ) {
+				$tags->add_class( $styles['classnames'] );
+			}
 		}
 
 		return $tags->get_updated_html();

@@ -2288,18 +2288,29 @@ class WP_Theme_JSON_Gutenberg {
 			if ( is_array( $value_path ) && is_array( $value_path[0] ) ) {
 				$combined_values = array();
 				foreach ( $value_path as $value_path_part ) {
-					$sub_value = static::get_property_value( $styles, $value_path_part, $theme_json );
+
 					// Processes background styles.
 					if ( 'background' === $value_path_part[0] && isset( $styles['background'] ) ) {
 						$background_styles = gutenberg_style_engine_get_styles( array( 'background' => $styles['background'] ) );
-						$sub_value         = $background_styles['declarations'][ $css_property ] ?? $sub_value;
+						$sub_value         = $background_styles['declarations'][ $css_property ] ?? null;
+					} else {
+						$sub_value = static::get_property_value( $styles, $value_path_part, $theme_json );
 					}
-					$combined_values[] = $sub_value;
+
+					if ( $sub_value ) {
+						$combined_values[] = $sub_value;
+					}
+
 				}
-				$value = ! empty( $combined_values ) ? implode( ', ', $combined_values ) : static::get_property_value( $styles, $value_path, $theme_json );
+				$value = ! empty( $combined_values ) ? implode( ', ', $combined_values ) : null;
 			} else {
 				$value = static::get_property_value( $styles, $value_path, $theme_json );
 			}
+
+			if ( null === $value ) {
+				continue;
+			}
+
 			if ( str_starts_with( $css_property, '--wp--style--root--' ) && ( static::ROOT_BLOCK_SELECTOR !== $selector || ! $use_root_padding ) ) {
 				continue;
 			}
@@ -3532,11 +3543,22 @@ class WP_Theme_JSON_Gutenberg {
 			if ( static::is_safe_css_declaration( $declaration['name'], $declaration['value'] ) ) {
 				$path = static::PROPERTIES_METADATA[ $declaration['name'] ];
 
-				// Check the value isn't an array before adding so as to not
-				// double up shorthand and longhand styles.
-				$value = _wp_array_get( $input, $path, array() );
-				if ( ! is_array( $value ) ) {
-					_wp_array_set( $output, $path, $value );
+				if ( is_array( $path ) && is_array( $path[0] ) ) {
+					foreach ( $path as $path_part ) {
+						// Check the value isn't an array before adding so as to not
+						// double up shorthand and longhand styles.
+						$value = _wp_array_get( $input, $path_part, array() );
+						if ( ! is_array( $value ) ) {
+							_wp_array_set( $output, $path_part, $value );
+						}
+					}
+				} else {
+					// Check the value isn't an array before adding so as to not
+					// double up shorthand and longhand styles.
+					$value = _wp_array_get( $input, $path, array() );
+					if ( ! is_array( $value ) ) {
+						_wp_array_set( $output, $path, $value );
+					}
 				}
 			}
 		}
