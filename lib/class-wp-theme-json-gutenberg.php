@@ -2277,6 +2277,7 @@ class WP_Theme_JSON_Gutenberg {
 		$root_variable_duplicates = array();
 
 		foreach ( $properties as $css_property => $value_path ) {
+			$value = null;
 			// @TODO how to deal with multiple values that need to be combined?
 			// background-image: linear-gradient(to right, red, blue), url('foo.png');
 			// Background images don't support opacity yet officially put it after gradient values.
@@ -2286,30 +2287,11 @@ class WP_Theme_JSON_Gutenberg {
 			// It's very specific to the `background-image` property, so maybe it can be handled in a separate function in background block supports?
 			// Or value_func like presets? Or in the style engine.
 			if ( is_array( $value_path ) && is_array( $value_path[0] ) ) {
-				$combined_values = array();
-				foreach ( $value_path as $value_path_part ) {
-
-					// Processes background styles.
-					if ( 'background' === $value_path_part[0] && isset( $styles['background'] ) ) {
-						$background_styles = gutenberg_style_engine_get_styles( array( 'background' => $styles['background'] ) );
-						$sub_value         = $background_styles['declarations'][ $css_property ] ?? null;
-					} else {
-						$sub_value = static::get_property_value( $styles, $value_path_part, $theme_json );
-					}
-
-					if ( $sub_value ) {
-						$combined_values[] = $sub_value;
-					}
-
-				}
-				$value = ! empty( $combined_values ) ? implode( ', ', $combined_values ) : null;
-			} else {
-				$value = static::get_property_value( $styles, $value_path, $theme_json );
+				$merged_styles = gutenberg_style_engine_get_styles( $styles );
+				$value         = $merged_styles['declarations'][$css_property] ?? null;
 			}
 
-			if ( null === $value ) {
-				continue;
-			}
+			$value = $value ?? static::get_property_value( $styles, $value_path, $theme_json );
 
 			if ( str_starts_with( $css_property, '--wp--style--root--' ) && ( static::ROOT_BLOCK_SELECTOR !== $selector || ! $use_root_padding ) ) {
 				continue;

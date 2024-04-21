@@ -62,7 +62,7 @@ export function getInlineStyles( styles = {} ) {
 	getCSSRules( styles ).forEach( ( rule ) => {
 		output[ rule.key ] = rule.value;
 	} );
-console.log( 'output', output );
+
 	return output;
 }
 

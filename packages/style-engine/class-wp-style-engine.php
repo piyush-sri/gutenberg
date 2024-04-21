@@ -97,7 +97,7 @@ if ( ! class_exists( 'WP_Style_Engine' ) ) {
 				),
 				'gradient'   => array(
 					'property_keys' => array(
-						'default' => 'background',
+						'default' => 'background-image',
 					),
 					'css_vars'      => array(
 						'gradient' => '--wp--preset--gradient--$slug',
@@ -419,16 +419,16 @@ if ( ! class_exists( 'WP_Style_Engine' ) ) {
 					}
 
 					$parsed_styles['classnames']   = array_merge( $parsed_styles['classnames'], static::get_classnames( $style_value, $style_definition ) );
-					$parsed_styles['declarations'] = array_merge( $parsed_styles['declarations'], static::get_css_declarations( $style_value, $style_definition, $options ) );
+					$css_declarations              = static::get_css_declarations( $style_value, $style_definition, $options );
+					$parsed_styles['declarations'] = static::merge_css_declarations( $parsed_styles['declarations'], $css_declarations, $style_definition );
 				}
 			}
 
 			// @TODO revisit this logic. Standardize it in some way.
-			if ( ! empty( $parsed_styles['declarations'] ) ) {
-
+/*			if ( ! empty( $parsed_styles['declarations'] ) ) {
 				$background_value = '';
 				if ( isset( $parsed_styles['declarations']['background'] ) ) {
-					$background_value = $parsed_styles['declarations']['background']. ', ';
+					$background_value = $parsed_styles['declarations']['background'] . ', ';
 					unset( $parsed_styles['declarations']['background'] );
 				}
 				if ( isset( $parsed_styles['declarations']['background-image'] ) ) {
@@ -437,9 +437,30 @@ if ( ! class_exists( 'WP_Style_Engine' ) ) {
 				} else {
 					$parsed_styles['declarations']['background-image'] = $background_value;
 				}
-			}
+			}*/
 
 			return $parsed_styles;
+		}
+
+		protected static function merge_css_declarations( $css_declarations, $new_css_declarations, $style_definition ) {
+			foreach ( $new_css_declarations as $property => $value ) {
+				if ( isset( $css_declarations[ $property ] ) ) {
+					if ( 'color.gradient' === implode( '.', $style_definition['path'] ) ) {
+						$css_declarations[ $property ] = $value . ', ' . $css_declarations[ $property ];
+						continue;
+					}
+					if ( 'background.backgroundImage' === implode( '.', $style_definition['path'] ) ) {
+
+						$css_declarations[ $property ] = $css_declarations[ $property ] . ', ' . $value;
+						continue;
+					}
+					// Overwrite by default.
+					$css_declarations[ $property ] = $value;
+				} else {
+					$css_declarations[ $property ] = $value;
+				}
+			}
+			return $css_declarations;
 		}
 
 		/**
