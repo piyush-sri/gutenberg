@@ -15,7 +15,7 @@ import DataViewItem from './dataview-item';
 import CustomDataViewsList from './custom-dataviews-list';
 
 const PATH_TO_TYPE = {
-	'/pages': 'page',
+	'/page': 'page',
 };
 
 export default function DataViewsSidebarContent() {
@@ -48,7 +48,7 @@ export default function DataViewsSidebarContent() {
 					);
 				} ) }
 			</ItemGroup>
-			{ window?.__experimentalAdminViews && (
+			{ window?.__experimentalCustomViews && (
 				<CustomDataViewsList
 					activeView={ activeView }
 					type={ type }
