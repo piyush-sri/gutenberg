@@ -97,7 +97,7 @@ function gutenberg_apply_typography_support( $block_type, $block_attributes ) {
 	$has_font_weight_support      = $typography_supports['__experimentalFontWeight'] ?? false;
 	$has_letter_spacing_support   = $typography_supports['__experimentalLetterSpacing'] ?? false;
 	$has_line_height_support      = $typography_supports['lineHeight'] ?? false;
-  $has_text_align_support      = $typography_supports['textAlign'] ?? false;
+	$has_text_align_support       = $typography_supports['textAlign'] ?? false;
 	$has_text_columns_support     = $typography_supports['textColumns'] ?? false;
 	$has_text_decoration_support  = $typography_supports['__experimentalTextDecoration'] ?? false;
 	$has_text_transform_support   = $typography_supports['__experimentalTextTransform'] ?? false;
