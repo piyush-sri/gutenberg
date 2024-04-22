@@ -530,23 +530,6 @@ export default function TypographyPanel( {
 					/>
 				</ToolsPanelItem>
 			) }
-			{ hasWritingModeControl && (
-				<ToolsPanelItem
-					className="single-column"
-					label={ __( 'Orientation' ) }
-					hasValue={ hasWritingMode }
-					onDeselect={ resetWritingMode }
-					isShownByDefault={ defaultControls.writingMode }
-					panelId={ panelId }
-				>
-					<WritingModeControl
-						value={ writingMode }
-						onChange={ setWritingMode }
-						size="__unstable-large"
-						__nextHasNoMarginBottom
-					/>
-				</ToolsPanelItem>
-			) }
 			{ hasTextTransformControl && (
 				<ToolsPanelItem
 					label={ __( 'Letter case' ) }
@@ -562,6 +545,20 @@ export default function TypographyPanel( {
 						isBlock
 						size="__unstable-large"
 						__nextHasNoMarginBottom
+					/>
+				</ToolsPanelItem>
+			) }
+			{ hasWritingModeControl && (
+				<ToolsPanelItem
+					label={ __( 'Text orientation' ) }
+					hasValue={ hasWritingMode }
+					onDeselect={ resetWritingMode }
+					isShownByDefault={ defaultControls.writingMode }
+					panelId={ panelId }
+				>
+					<WritingModeControl
+						value={ getValuefromWritingModeAndTextOrientation() }
+						onChange={ setWritingModeAndTextOrientation }
 					/>
 				</ToolsPanelItem>
 			) }

@@ -274,6 +274,7 @@ Typography styles.
 | textColumns | string |  |
 | textDecoration | string, object |  |
 | writingMode | string, object |  |
+| textOrientation | string, object |  |
 | textTransform | string, object |  |
 
 ---
