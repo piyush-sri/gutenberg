@@ -8,7 +8,11 @@ const gradient = {
 	name: 'gradient',
 	generate: ( style: Style, options: StyleOptions ) => {
 		// If there's a background image process it via backgroundImage.
-		if ( !! style?.background?.backgroundImage ) {
+		const _backgroundImage = style?.background?.backgroundImage;
+		if (
+			typeof _backgroundImage === 'string' ||
+			typeof _backgroundImage?.url === 'string'
+		) {
 			return [];
 		}
 
