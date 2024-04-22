@@ -45,8 +45,7 @@ function gutenberg_render_background_support( $block_content, $block ) {
 	$has_background_image_support    = block_has_support( $block_type, array( 'background', 'backgroundImage' ), false );
 	$has_background_gradient_support = block_has_support( $block_type, array( 'color', 'gradients' ), false );
 
-
-	$background_styles  = array();
+	$background_styles = array();
 	if ( $has_background_image_support &&
 		! wp_should_skip_block_supports_serialization( $block_type, 'background', 'backgroundImage' ) &&
 		! empty( $block_attributes['style']['background']['backgroundImage'] )
@@ -67,8 +66,8 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 	$background_gradient_styles = array();
 	if ( $has_background_gradient_support && ! wp_should_skip_block_supports_serialization( $block_type, 'color', 'gradients' ) ) {
-		$preset_gradient_color             = array_key_exists( 'gradient', $block_attributes ) ? "var:preset|gradient|{$block_attributes['gradient']}" : null;
-		$custom_gradient_color             = $block_attributes['style']['color']['gradient'] ?? null;
+		$preset_gradient_color                  = array_key_exists( 'gradient', $block_attributes ) ? "var:preset|gradient|{$block_attributes['gradient']}" : null;
+		$custom_gradient_color                  = $block_attributes['style']['color']['gradient'] ?? null;
 		$background_gradient_styles['gradient'] = $preset_gradient_color ?: $custom_gradient_color;
 	}
 
@@ -79,7 +78,13 @@ function gutenberg_render_background_support( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$styles = gutenberg_style_engine_get_styles( array( 'background' => $background_styles, 'color' => $background_gradient_styles ), array( 'convert_vars_to_classnames' => true ) );
+	$styles = gutenberg_style_engine_get_styles(
+		array(
+			'background' => $background_styles,
+			'color'      => $background_gradient_styles,
+		),
+		array( 'convert_vars_to_classnames' => true )
+	);
 
 	if ( ! empty( $styles['css'] ) ) {
 		// Inject background styles to the first element, presuming it's the wrapper, if it exists.
@@ -109,11 +114,16 @@ function gutenberg_render_background_support( $block_content, $block ) {
 	return $block_content;
 }
 
+function gutenberg_apply_background_support( $block_type, $block_attributes ) {
+	var_dump( $block_attributes );
+}
+
 // Register the block support.
 WP_Block_Supports::get_instance()->register(
 	'background',
 	array(
 		'register_attribute' => 'gutenberg_register_background_support',
+		'apply'              => 'gutenberg_apply_background_support',
 	)
 );
 
@@ -121,4 +131,3 @@ if ( function_exists( 'wp_render_background_support' ) ) {
 	remove_filter( 'render_block', 'wp_render_background_support' );
 }
 add_filter( 'render_block', 'gutenberg_render_background_support', 10, 2 );
-

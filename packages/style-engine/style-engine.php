@@ -55,7 +55,6 @@ function wp_style_engine_get_styles( $block_styles, $options = array() ) {
 
 	if ( ! empty( $parsed_styles['declarations'] ) ) {
 		$styles_output['css']          = WP_Style_Engine::compile_css( $parsed_styles['declarations'], $options['selector'] );
-
 		$styles_output['declarations'] = $parsed_styles['declarations'];
 		if ( ! empty( $options['context'] ) ) {
 			WP_Style_Engine::store_css_rule( $options['context'], $options['selector'], $parsed_styles['declarations'] );

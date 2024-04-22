@@ -423,23 +423,12 @@ if ( ! class_exists( 'WP_Style_Engine' ) ) {
 				}
 			}
 
+			// Where necessary, merge background-image and background declarations.
 			// @TODO revisit this logic. Standardize it in some way.
-			// E.g., apply_filters() to allow for custom merge functions.
-			// Another way would be to change the default property of `color.gradient` to `background-image` and have a custom merge function.
-			// OR iterate over CSS properties like THEME JSON class does.
 			if ( ! empty( $parsed_styles['declarations'] ) ) {
-				$background_value = '';
-				if ( isset( $parsed_styles['declarations']['background'] ) ) {
-					$background_value = $parsed_styles['declarations']['background'];
+				if ( isset( $parsed_styles['declarations']['background-image'] ) && isset( $parsed_styles['declarations']['background'] ) ) {
+					$parsed_styles['declarations']['background-image'] = $parsed_styles['declarations']['background'] . ', ' . $parsed_styles['declarations']['background-image'];
 					unset( $parsed_styles['declarations']['background'] );
-				}
-
-				if ( ! empty( $background_value ) ) {
-					if ( isset( $parsed_styles['declarations']['background-image'] ) ) {
-						$parsed_styles['declarations']['background-image'] = $background_value . ', ' . $parsed_styles['declarations']['background-image'];
-					} else {
-						$parsed_styles['declarations']['background-image'] = $background_value;
-					}
 				}
 			}
 
