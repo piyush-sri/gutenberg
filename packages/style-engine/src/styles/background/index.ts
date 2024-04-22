@@ -12,6 +12,7 @@ const backgroundImage = {
 			typeof style?.color?.gradient === 'string'
 				? `${ getCSSVarFromStyleValue( style.color.gradient ) }, `
 				: '';
+
 		if ( typeof _backgroundImage === 'object' && _backgroundImage?.url ) {
 			return [
 				{

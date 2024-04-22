@@ -47,9 +47,8 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 
 	$background_styles  = array();
-	if (
-		! $has_background_image_support ||
-		wp_should_skip_block_supports_serialization( $block_type, 'background', 'backgroundImage' ) ||
+	if ( $has_background_image_support &&
+		! wp_should_skip_block_supports_serialization( $block_type, 'background', 'backgroundImage' ) &&
 		! empty( $block_attributes['style']['background']['backgroundImage'] )
 	) {
 		$background_styles['backgroundSize']  = isset( $block_attributes['style']['background']['backgroundSize'] ) ? $block_attributes['style']['background']['backgroundSize'] : 'cover';
@@ -122,3 +121,4 @@ if ( function_exists( 'wp_render_background_support' ) ) {
 	remove_filter( 'render_block', 'wp_render_background_support' );
 }
 add_filter( 'render_block', 'gutenberg_render_background_support', 10, 2 );
+
