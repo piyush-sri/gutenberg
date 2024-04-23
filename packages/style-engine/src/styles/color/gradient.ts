@@ -20,7 +20,7 @@ const gradient = {
 			style,
 			options,
 			[ 'color', 'gradient' ],
-			'background-image'
+			'background'
 		);
 	},
 };
