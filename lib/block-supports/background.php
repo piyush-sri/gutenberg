@@ -68,7 +68,7 @@ function gutenberg_render_background_support( $block_content, $block ) {
 	if ( $has_background_gradient_support && ! wp_should_skip_block_supports_serialization( $block_type, 'color', 'gradients' ) ) {
 		$preset_gradient_color                  = array_key_exists( 'gradient', $block_attributes ) ? "var:preset|gradient|{$block_attributes['gradient']}" : null;
 		$custom_gradient_color                  = $block_attributes['style']['color']['gradient'] ?? null;
-		$background_gradient_styles['gradient'] = $preset_gradient_color ?: $custom_gradient_color;
+		$background_gradient_styles['gradient'] = $preset_gradient_color ? $preset_gradient_color : $custom_gradient_color;
 	}
 
 	if (
@@ -83,7 +83,7 @@ function gutenberg_render_background_support( $block_content, $block ) {
 			'background' => $background_styles,
 			'color'      => $background_gradient_styles,
 		),
-		array( 'convert_vars_to_classnames' => true )
+		array( 'convert_vars_to_classnames' => ! empty( $preset_gradient_color ) && empty( $background_styles ) )
 	);
 
 	if ( ! empty( $styles['css'] ) ) {
@@ -92,7 +92,13 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 		if ( $tags->next_tag() ) {
 			$existing_style = $tags->get_attribute( 'style' );
-			$updated_style  = '';
+
+			// Remove any existing background color if a background image and gradient is set.
+			if ( ! empty( $background_gradient_styles['gradient'] ) && ! empty( $background_styles ) ) {
+				$existing_style = preg_replace( '/background\s*:\s*' . preg_quote( $background_gradient_styles['gradient'], '/' ) . '\s*;?/', '', $existing_style, 1 );
+			}
+
+			$updated_style = '';
 
 			if ( ! empty( $existing_style ) ) {
 				$updated_style = $existing_style;
@@ -103,9 +109,6 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 			$updated_style .= $styles['css'];
 			$tags->set_attribute( 'style', $updated_style );
-			if ( ! empty( $styles['classnames'] ) ) {
-				$tags->add_class( $styles['classnames'] );
-			}
 		}
 
 		return $tags->get_updated_html();

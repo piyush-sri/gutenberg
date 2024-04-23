@@ -156,8 +156,8 @@ class WP_Theme_JSON_Gutenberg {
 			'use_default_names' => false,
 			'value_key'         => 'gradient',
 			'css_vars'          => '--wp--preset--gradient--$slug',
-			'classes'           => array( '.has-$slug-gradient-background' => 'background-image' ),
-			'properties'        => array( 'background-image' ),
+			'classes'           => array( '.has-$slug-gradient-background' => 'background' ),
+			'properties'        => array( 'background' ),
 		),
 		array(
 			'path'              => array( 'color', 'duotone' ),
@@ -228,11 +228,9 @@ class WP_Theme_JSON_Gutenberg {
 	 */
 	const PROPERTIES_METADATA = array(
 		'aspect-ratio'                      => array( 'dimensions', 'aspectRatio' ),
+		'background'                        => array( 'color', 'gradient' ),
 		'background-color'                  => array( 'color', 'background' ),
-		'background-image'                  => array(
-			array( 'color', 'gradient' ),
-			array( 'background', 'backgroundImage' ),
-		),
+		'background-image'                  => array( 'background', 'backgroundImage' ),
 		'background-position'               => array( 'background', 'backgroundPosition' ),
 		'background-repeat'                 => array( 'background', 'backgroundRepeat' ),
 		'background-size'                   => array( 'background', 'backgroundSize' ),
@@ -2274,24 +2272,10 @@ class WP_Theme_JSON_Gutenberg {
 			return $declarations;
 		}
 
-		$root_variable_duplicates = array();
+		$properties_to_remove = array();
 
 		foreach ( $properties as $css_property => $value_path ) {
-			$value = null;
-			// @TODO how to deal with multiple values that need to be combined?
-			// background-image: linear-gradient(to right, red, blue), url('foo.png');
-			// Background images don't support opacity yet officially put it after gradient values.
-			// Needs to be handled before the first is_array check below.
-			// Needs to be handled in conjunctions with background styles processing so we get the url value.
-			// This is a placeholder for now - let's abstract this out later.
-			// It's very specific to the `background-image` property, so maybe it can be handled in a separate function in background block supports?
-			// Or value_func like presets? Or in the style engine.
-			if ( is_array( $value_path ) && is_array( $value_path[0] ) ) {
-				$merged_styles = gutenberg_style_engine_get_styles( $styles );
-				$value         = $merged_styles['declarations'][$css_property] ?? null;
-			}
-
-			$value = $value ?? static::get_property_value( $styles, $value_path, $theme_json );
+			$value = static::get_property_value( $styles, $value_path, $theme_json );
 
 			if ( str_starts_with( $css_property, '--wp--style--root--' ) && ( static::ROOT_BLOCK_SELECTOR !== $selector || ! $use_root_padding ) ) {
 				continue;
@@ -2303,18 +2287,28 @@ class WP_Theme_JSON_Gutenberg {
 			}
 
 			if ( str_starts_with( $css_property, '--wp--style--root--' ) && $use_root_padding ) {
-				$root_variable_duplicates[] = substr( $css_property, strlen( '--wp--style--root--' ) );
+				$properties_to_remove[] = substr( $css_property, strlen( '--wp--style--root--' ) );
 			}
 
 			// Look up protected properties, keyed by value path.
 			// Skip protected properties that are explicitly set to `null`.
-			if ( is_array( $value_path ) && ! is_array( $value_path[0] ) ) {
+			if ( is_array( $value_path ) ) {
 				$path_string = implode( '.', $value_path );
 				if (
 					isset( static::PROTECTED_PROPERTIES[ $path_string ] ) &&
 					_wp_array_get( $settings, static::PROTECTED_PROPERTIES[ $path_string ], null ) === null
 				) {
 					continue;
+				}
+			}
+
+			// Processes background styles and merges gradient with `background-image`.
+			if ( 'background' === $value_path[0] && isset( $styles['background'] ) ) {
+				$background_styles       = gutenberg_style_engine_get_styles( $styles );
+				$background_image_styles = ! empty( $background_styles['declarations'][ $css_property ] ) ? $background_styles['declarations'][ $css_property ] : null;
+				if ( $background_image_styles ) {
+					$value                  = $background_image_styles;
+					$properties_to_remove[] = 'background';
 				}
 			}
 
@@ -2353,7 +2347,7 @@ class WP_Theme_JSON_Gutenberg {
 		}
 
 		// If a variable value is added to the root, the corresponding property should be removed.
-		foreach ( $root_variable_duplicates as $duplicate ) {
+		foreach ( $properties_to_remove as $duplicate ) {
 			$discard = array_search( $duplicate, array_column( $declarations, 'name' ), true );
 			if ( is_numeric( $discard ) ) {
 				array_splice( $declarations, $discard, 1 );
