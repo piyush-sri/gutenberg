@@ -56,9 +56,10 @@ function gutenberg_render_background_support( $block_content, $block ) {
 	$background_styles['backgroundImage'] = isset( $block_attributes['style']['background']['backgroundImage'] ) ? $block_attributes['style']['background']['backgroundImage'] : array();
 
 	if ( ! empty( $background_styles['backgroundImage'] ) ) {
-		$background_styles['backgroundSize']     = isset( $block_attributes['style']['background']['backgroundSize'] ) ? $block_attributes['style']['background']['backgroundSize'] : 'cover';
-		$background_styles['backgroundPosition'] = isset( $block_attributes['style']['background']['backgroundPosition'] ) ? $block_attributes['style']['background']['backgroundPosition'] : null;
-		$background_styles['backgroundRepeat']   = isset( $block_attributes['style']['background']['backgroundRepeat'] ) ? $block_attributes['style']['background']['backgroundRepeat'] : null;
+		$background_styles['backgroundSize']       = isset( $block_attributes['style']['background']['backgroundSize'] ) ? $block_attributes['style']['background']['backgroundSize'] : 'cover';
+		$background_styles['backgroundPosition']   = isset( $block_attributes['style']['background']['backgroundPosition'] ) ? $block_attributes['style']['background']['backgroundPosition'] : null;
+		$background_styles['backgroundRepeat']     = isset( $block_attributes['style']['background']['backgroundRepeat'] ) ? $block_attributes['style']['background']['backgroundRepeat'] : null;
+		$background_styles['backgroundAttachment'] = isset( $block_attributes['style']['background']['backgroundAttachment'] ) ? $block_attributes['style']['background']['backgroundAttachment'] : null;
 
 		// If the background size is set to `contain` and no position is set, set the position to `center`.
 		if ( 'contain' === $background_styles['backgroundSize'] && ! $background_styles['backgroundPosition'] ) {

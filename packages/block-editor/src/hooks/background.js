@@ -162,6 +162,7 @@ export function BackgroundImagePanel( {
 		...settings,
 		background: {
 			...settings.background,
+			backgroundAttachment: true,
 			backgroundSize:
 				settings?.background?.backgroundSize &&
 				hasBackgroundSupport( name, 'backgroundSize' ),

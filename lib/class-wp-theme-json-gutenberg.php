@@ -234,6 +234,7 @@ class WP_Theme_JSON_Gutenberg {
 		'background-position'               => array( 'background', 'backgroundPosition' ),
 		'background-repeat'                 => array( 'background', 'backgroundRepeat' ),
 		'background-size'                   => array( 'background', 'backgroundSize' ),
+		'background-attachment'             => array( 'background', 'backgroundAttachment' ),
 		'border-radius'                     => array( 'border', 'radius' ),
 		'border-top-left-radius'            => array( 'border', 'radius', 'topLeft' ),
 		'border-top-right-radius'           => array( 'border', 'radius', 'topRight' ),
@@ -502,10 +503,11 @@ class WP_Theme_JSON_Gutenberg {
 	 */
 	const VALID_STYLES = array(
 		'background' => array(
-			'backgroundImage'    => 'top',
-			'backgroundPosition' => 'top',
-			'backgroundRepeat'   => 'top',
-			'backgroundSize'     => 'top',
+			'backgroundImage'      => 'top',
+			'backgroundAttachment' => 'top',
+			'backgroundPosition'   => 'top',
+			'backgroundRepeat'     => 'top',
+			'backgroundSize'       => 'top',
 		),
 		'border'     => array(
 			'color'  => null,
