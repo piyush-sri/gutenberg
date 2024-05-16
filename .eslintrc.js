@@ -436,5 +436,16 @@ module.exports = {
 				'react/react-in-jsx-scope': 'error',
 			},
 		},
+		{
+			files: [ 'plugins/time-to-read-block/src/**' ],
+			rules: {
+				'@wordpress/i18n-text-domain': [
+					'error',
+					{
+						allowedTextDomain: 'time-to-read-block',
+					},
+				],
+			},
+		},
 	],
 };
