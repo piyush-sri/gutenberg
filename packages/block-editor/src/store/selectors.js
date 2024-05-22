@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import {
+	getBlockDefaultClassName,
 	getBlockType,
 	getBlockTypes,
 	getBlockVariations,
@@ -1864,6 +1865,15 @@ const canIncludeBlockTypeInInserter = ( state, blockType, rootClientId ) => {
 const getItemFromVariation = ( state, item ) => ( variation ) => {
 	const variationId = `${ item.id }/${ variation.name }`;
 	const { time, count = 0 } = getInsertUsage( state, variationId ) || {};
+
+	const initialAttributes = {
+		...item.initialAttributes,
+		...variation.attributes,
+		className: `${ item.initialAttributes?.className || '' } ${
+			variation.attributes?.className || ''
+		} ${ getBlockDefaultClassName( variationId ) }`.trim(),
+	};
+
 	return {
 		...item,
 		id: variationId,
@@ -1875,10 +1885,7 @@ const getItemFromVariation = ( state, item ) => ( variation ) => {
 		example: variation.hasOwnProperty( 'example' )
 			? variation.example
 			: item.example,
-		initialAttributes: {
-			...item.initialAttributes,
-			...variation.attributes,
-		},
+		initialAttributes,
 		innerBlocks: variation.innerBlocks,
 		keywords: variation.keywords || item.keywords,
 		frecency: calculateFrecency( time, count ),
