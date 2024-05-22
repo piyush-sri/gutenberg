@@ -120,6 +120,15 @@ describe( 'selectors', () => {
 			parent: [ 'core/test-block-b' ],
 		} );
 
+		registerBlockType( 'core/test-block-with-variations', {
+			save: ( props ) => props.attributes.text,
+			category: 'text',
+			title: 'Test Block With Variations',
+			icon: 'test',
+			keywords: [ 'testing' ],
+			variations: [ { name: 'variation-a' }, { name: 'variation-b' } ],
+		} );
+
 		registerBlockType( 'core/freeform', {
 			save: ( props ) => <RawHTML>{ props.attributes.content }</RawHTML>,
 			category: 'text',
@@ -192,6 +201,7 @@ describe( 'selectors', () => {
 		unregisterBlockType( 'core/test-block-parent' );
 		unregisterBlockType( 'core/test-block-requires-ancestor' );
 		unregisterBlockType( 'core/test-block-requires-ancestor-parent' );
+		unregisterBlockType( 'core/test-block-with-variations' );
 
 		setFreeformContentHandlerName( undefined );
 	} );
@@ -3393,6 +3403,9 @@ describe( 'selectors', () => {
 			expect( firstBlockFirstCall.map( ( item ) => item.id ) ).toEqual( [
 				'core/test-block-a',
 				'core/test-block-b',
+				'core/test-block-with-variations',
+				'core/test-block-with-variations/variation-a',
+				'core/test-block-with-variations/variation-b',
 				'core/freeform',
 				'core/test-block-ancestor',
 				'core/test-block-parent',
@@ -3412,6 +3425,9 @@ describe( 'selectors', () => {
 			expect( secondBlockFirstCall.map( ( item ) => item.id ) ).toEqual( [
 				'core/test-block-a',
 				'core/test-block-b',
+				'core/test-block-with-variations',
+				'core/test-block-with-variations/variation-a',
+				'core/test-block-with-variations/variation-b',
 				'core/freeform',
 				'core/test-block-ancestor',
 				'core/test-block-parent',
@@ -3454,6 +3470,62 @@ describe( 'selectors', () => {
 				( item ) => item.id === 'core/test-block-b'
 			);
 			expect( reusableBlock2Item.frecency ).toBe( 40 );
+		} );
+
+		it( 'should return variations with items', () => {
+			const items = select( store ).getInserterItems();
+			const variationA = items.find(
+				( item ) =>
+					item.id === 'core/test-block-with-variations/variation-a'
+			);
+			const variationB = items.find(
+				( item ) =>
+					item.id === 'core/test-block-with-variations/variation-b'
+			);
+			expect( variationA ).toEqual( {
+				category: 'text',
+				description: undefined,
+				example: undefined,
+				frecency: 0,
+				icon: { src: 'test' },
+				id: 'core/test-block-with-variations/variation-a',
+				initialAttributes: {
+					className:
+						'wp-block-test-block-with-variations-variation-a',
+				},
+				innerBlocks: undefined,
+				isDisabled: false,
+				keywords: [ 'testing' ],
+				name: 'core/test-block-with-variations',
+				title: 'Test Block With Variations',
+				utility: 1,
+				variations: [
+					{ name: 'variation-a', source: 'block' },
+					{ name: 'variation-b', source: 'block' },
+				],
+			} );
+			expect( variationB ).toEqual( {
+				category: 'text',
+				description: undefined,
+				example: undefined,
+				frecency: 0,
+				icon: { src: 'test' },
+				id: 'core/test-block-with-variations/variation-b',
+				initialAttributes: {
+					className:
+						'wp-block-test-block-with-variations-variation-b',
+				},
+				innerBlocks: undefined,
+				isDisabled: false,
+				keywords: [ 'testing' ],
+				name: 'core/test-block-with-variations',
+				title: 'Test Block With Variations',
+				utility: 1,
+				variations: [
+					{ name: 'variation-a', source: 'block' },
+					{ name: 'variation-b', source: 'block' },
+				],
+			} );
 		} );
 	} );
 
