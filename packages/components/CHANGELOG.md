@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+-   `Tabs`: Make Tabs have a fluid height ([#62027](https://github.com/WordPress/gutenberg/pull/62027)).
+
 ### Breaking Changes
 
 -   Variables like `process.env.IS_GUTENBERG_PLUGIN` have been replaced by `globalThis.IS_GUTENBERG_PLUGIN`. Build systems using `process.env` should be updated ([#61486](https://github.com/WordPress/gutenberg/pull/61486)).
