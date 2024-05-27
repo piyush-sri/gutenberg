@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * WordPress dependencies
@@ -33,7 +33,7 @@ export function Caption( {
 	label = __( 'Caption text' ),
 	showToolbarButton = true,
 	className,
-	disableEditing,
+	readOnly,
 	tagName = 'figcaption',
 	addLabel = __( 'Add caption' ),
 	removeLabel = __( 'Remove caption' ),
@@ -94,7 +94,7 @@ export function Caption( {
 					<RichText
 						identifier={ attributeKey }
 						tagName={ tagName }
-						className={ classnames(
+						className={ clsx(
 							className,
 							__experimentalGetElementClassName( 'caption' )
 						) }
@@ -111,7 +111,7 @@ export function Caption( {
 								createBlock( getDefaultBlockName() )
 							)
 						}
-						disableEditing={ disableEditing }
+						readOnly={ readOnly }
 						{ ...props }
 					/>
 				) }

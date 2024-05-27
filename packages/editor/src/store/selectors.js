@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import createSelector from 'rememo';
-
-/**
  * WordPress dependencies
  */
 import {
@@ -14,7 +9,7 @@ import {
 } from '@wordpress/blocks';
 import { isInTheFuture, getDate } from '@wordpress/date';
 import { addQueryArgs, cleanForSlug } from '@wordpress/url';
-import { createRegistrySelector } from '@wordpress/data';
+import { createSelector, createRegistrySelector } from '@wordpress/data';
 import deprecated from '@wordpress/deprecated';
 import { Platform } from '@wordpress/element';
 import { layout } from '@wordpress/icons';
@@ -843,7 +838,9 @@ export const getSuggestedPostFormat = createRegistrySelector(
 	( select ) => () => {
 		const blocks = select( blockEditorStore ).getBlocks();
 
-		if ( blocks.length > 2 ) return null;
+		if ( blocks.length > 2 ) {
+			return null;
+		}
 
 		let name;
 		// If there is only one block in the content of the post grab its name
@@ -986,7 +983,7 @@ export function getEditedPostSlug( state ) {
 }
 
 /**
- * Returns the permalink for a post, split into it's three parts: the prefix,
+ * Returns the permalink for a post, split into its three parts: the prefix,
  * the postName, and the suffix.
  *
  * @param {Object} state Editor state.
@@ -1107,10 +1104,7 @@ export function canUserUseUnfilteredHTML( state ) {
  */
 export const isPublishSidebarEnabled = createRegistrySelector(
 	( select ) => () =>
-		!! select( preferencesStore ).get(
-			'core/edit-post',
-			'isPublishSidebarEnabled'
-		)
+		!! select( preferencesStore ).get( 'core', 'isPublishSidebarEnabled' )
 );
 
 /**
@@ -1791,3 +1785,14 @@ export const getPostTypeLabel = createRegistrySelector(
 		return postType?.labels?.singular_name;
 	}
 );
+
+/**
+ * Returns true if the publish sidebar is opened.
+ *
+ * @param {Object} state Global application state
+ *
+ * @return {boolean} Whether the publish sidebar is open.
+ */
+export function isPublishSidebarOpened( state ) {
+	return state.publishSidebarActive;
+}

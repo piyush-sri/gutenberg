@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * WordPress dependencies
@@ -80,7 +80,7 @@ export default function QuoteEdit( {
 	useMigrateOnLoad( attributes, clientId );
 
 	const blockProps = useBlockProps( {
-		className: classNames( className, {
+		className: clsx( className, {
 			[ `has-text-align-${ textAlign }` ]: textAlign,
 		} ),
 		...( ! isWebPlatform && { style } ),
@@ -89,6 +89,7 @@ export default function QuoteEdit( {
 		template: TEMPLATE,
 		templateInsertUpdatesSelection: true,
 		__experimentalCaptureToolbars: true,
+		renderAppender: false,
 	} );
 
 	return (
@@ -105,7 +106,7 @@ export default function QuoteEdit( {
 				{ innerBlocksProps.children }
 				<Caption
 					attributeKey="citation"
-					tagName={ isWebPlatform ? 'cite' : undefined }
+					tagName={ isWebPlatform ? 'cite' : 'p' }
 					style={ isWebPlatform && { display: 'block' } }
 					isSelected={ isSelected }
 					attributes={ attributes }
