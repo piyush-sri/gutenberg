@@ -545,6 +545,14 @@ function BackgroundSizeToolsPanelItem( {
 						size={ '__unstable-large' }
 						__unstableInputWidth="100px"
 						min={ 0 }
+						allowedUnitValues={ [
+							'%',
+							'px',
+							'em',
+							'rem',
+							'vw',
+							'vh',
+						] }
 					/>
 				) : null }
 				{ currentValueForToggle !== 'cover' && (
