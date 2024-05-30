@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import { fixCustomClassname } from './fix-custom-classname';
+import {
+	fixCustomClassname,
+	fixVariationClassname,
+} from './fix-custom-classname';
 
 /**
  * Attempts to fix block invalidation by applying build-in validation fixes
@@ -20,8 +23,16 @@ export function applyBuiltInValidationFixes( block, blockType ) {
 		blockType,
 		block.originalContent
 	);
+
+	const newContent = fixVariationClassname(
+		block.attributes,
+		blockType,
+		block.originalContent
+	);
+
 	return {
 		...block,
+		originalContent: newContent,
 		attributes: updatedBlockAttributes,
 	};
 }

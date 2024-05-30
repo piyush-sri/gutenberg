@@ -2,8 +2,9 @@
  * Internal dependencies
  */
 import { hasBlockSupport } from '../registration';
-import { getSaveContent } from '../serializer';
+import { getSaveContent, getBlockDefaultClassName } from '../serializer';
 import { parseWithAttributeSchema } from './get-block-attributes';
+import { getBlockTypeActiveVariation } from '../../utils';
 
 const CLASS_ATTR_SCHEMA = {
 	type: 'string',
@@ -68,4 +69,32 @@ export function fixCustomClassname( blockAttributes, blockType, innerHTML ) {
 	}
 
 	return modifiedBlockAttributes;
+}
+
+export function fixVariationClassname( blockAttributes, blockType, innerHTML ) {
+	if ( hasBlockSupport( blockType, 'className', true ) ) {
+		const activeVariation = getBlockTypeActiveVariation(
+			blockType.variations,
+			blockType,
+			blockAttributes
+		);
+
+		if ( activeVariation ) {
+			const variationName = `${ blockType.name }/${ activeVariation.name }`;
+			const variationClassName =
+				getBlockDefaultClassName( variationName );
+			const actualClasses = getHTMLRootElementClasses( innerHTML );
+			const hasVariationClassName =
+				actualClasses.includes( variationClassName );
+
+			if ( ! hasVariationClassName ) {
+				return innerHTML.replace(
+					/(<div\s+class=")([^"]*)"/,
+					`$1$2 ${ variationClassName }"`
+				);
+			}
+		}
+	}
+
+	return innerHTML;
 }

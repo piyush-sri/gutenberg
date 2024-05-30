@@ -9,5 +9,6 @@
 // and then stored as objects in state, from which it is then rendered for editing.
 
 export { store } from './store';
+export { getBlockTypeActiveVariation } from './utils';
 export * from './api';
 export * from './deprecated';
