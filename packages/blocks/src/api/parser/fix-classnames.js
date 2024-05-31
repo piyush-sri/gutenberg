@@ -71,6 +71,18 @@ export function fixCustomClassname( blockAttributes, blockType, innerHTML ) {
 	return modifiedBlockAttributes;
 }
 
+/**
+ * Given a block's attributes, block type settings, and innerHTML. If the block
+ * has variations and the active variation is not reflected in the block's
+ * markup, the active variation's class name is injected into the block's
+ * markup.
+ *
+ * @param {Object} blockAttributes Original block attributes.
+ * @param {Object} blockType       Block type settings.
+ * @param {string} innerHTML       Original block markup.
+ *
+ * @return {string} Block markup.
+ */
 export function fixVariationClassname( blockAttributes, blockType, innerHTML ) {
 	if ( hasBlockSupport( blockType, 'className', true ) ) {
 		const activeVariation = getBlockTypeActiveVariation(

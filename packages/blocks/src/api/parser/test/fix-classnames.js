@@ -4,7 +4,7 @@
 import {
 	fixCustomClassname,
 	getHTMLRootElementClasses,
-} from '../fix-custom-classname';
+} from '../fix-classnames';
 
 describe( 'Fix custom className', () => {
 	const blockSettings = {
