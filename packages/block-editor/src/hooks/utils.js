@@ -23,7 +23,7 @@ import { unlock } from '../lock-unlock';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * Removed falsy values from nested object.
@@ -240,7 +240,11 @@ export function useBlockSettings( name, parentLayout ) {
 		padding,
 		margin,
 		blockGap,
-		spacingSizes,
+		defaultSpacingSizesEnabled,
+		customSpacingSize,
+		userSpacingSizes,
+		defaultSpacingSizes,
+		themeSpacingSizes,
 		units,
 		aspectRatio,
 		minHeight,
@@ -293,7 +297,11 @@ export function useBlockSettings( name, parentLayout ) {
 		'spacing.padding',
 		'spacing.margin',
 		'spacing.blockGap',
-		'spacing.spacingSizes',
+		'spacing.defaultSpacingSizes',
+		'spacing.customSpacingSize',
+		'spacing.spacingSizes.custom',
+		'spacing.spacingSizes.default',
+		'spacing.spacingSizes.theme',
 		'spacing.units',
 		'dimensions.aspectRatio',
 		'dimensions.minHeight',
@@ -384,8 +392,12 @@ export function useBlockSettings( name, parentLayout ) {
 			},
 			spacing: {
 				spacingSizes: {
-					custom: spacingSizes,
+					custom: userSpacingSizes,
+					default: defaultSpacingSizes,
+					theme: themeSpacingSizes,
 				},
+				customSpacingSize,
+				defaultSpacingSizes: defaultSpacingSizesEnabled,
 				padding,
 				margin,
 				blockGap,
@@ -428,7 +440,11 @@ export function useBlockSettings( name, parentLayout ) {
 		padding,
 		margin,
 		blockGap,
-		spacingSizes,
+		defaultSpacingSizesEnabled,
+		customSpacingSize,
+		userSpacingSizes,
+		defaultSpacingSizes,
+		themeSpacingSizes,
 		units,
 		aspectRatio,
 		minHeight,
@@ -595,6 +611,7 @@ export function createBlockListBlockFilter( features ) {
 							// function reference.
 							setAllWrapperProps={ setAllWrapperProps }
 							name={ props.name }
+							clientId={ props.clientId }
 							// This component is pure, so only pass needed
 							// props!!!
 							{ ...neededProps }
@@ -610,7 +627,7 @@ export function createBlockListBlockFilter( features ) {
 							return {
 								...acc,
 								...wrapperProps,
-								className: classnames(
+								className: clsx(
 									acc.className,
 									wrapperProps.className
 								),

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * WordPress dependencies
@@ -349,7 +349,7 @@ export function MediaPlaceholder( {
 			}
 		}
 
-		const placeholderClassName = classnames(
+		const placeholderClassName = clsx(
 			'block-editor-media-placeholder',
 			className,
 			{
@@ -452,7 +452,7 @@ export function MediaPlaceholder( {
 				multiple={ multiple }
 				onSelect={ onSelect }
 				allowedTypes={ allowedTypes }
-				mode={ 'browse' }
+				mode="browse"
 				value={
 					Array.isArray( value )
 						? value.map( ( { id } ) => id )
@@ -475,7 +475,7 @@ export function MediaPlaceholder( {
 								<>
 									<Button
 										variant="primary"
-										className={ classnames(
+										className={ clsx(
 											'block-editor-media-placeholder__button',
 											'block-editor-media-placeholder__upload-button'
 										) }
@@ -502,7 +502,7 @@ export function MediaPlaceholder( {
 					{ renderDropZone() }
 					<FormFileUpload
 						variant="primary"
-						className={ classnames(
+						className={ clsx(
 							'block-editor-media-placeholder__button',
 							'block-editor-media-placeholder__upload-button'
 						) }
