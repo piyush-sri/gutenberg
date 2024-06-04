@@ -5,6 +5,7 @@
 ### Enhancements
 
 -   `DropZone`: rewrite animation without depending on framer-motion. ([#62044](https://github.com/WordPress/gutenberg/pull/62044))
+-   `Toolbar`: Add support for `vertical` orientation ([#60123](https://github.com/WordPress/gutenberg/pull/60123)).
 
 ### Internal
 
