@@ -56,6 +56,7 @@ function isTemplateRemovable( template ) {
 			TEMPLATE_ORIGINS.custom
 		) &&
 		template.origin !== 'plugin' &&
+		template.templatePart?.origin !== 'plugin' &&
 		! template.has_theme_file &&
 		! template.templatePart?.has_theme_file
 	);
@@ -842,7 +843,10 @@ const isTemplatePartRevertable = ( item ) => {
 		return false;
 	}
 	const hasThemeFile = item.templatePart?.has_theme_file;
-	return canDeleteOrReset( item ) && hasThemeFile;
+	return (
+		canDeleteOrReset( item ) &&
+		( hasThemeFile || item.templatePart?.origin === 'plugin' )
+	);
 };
 
 const resetTemplateAction = {
