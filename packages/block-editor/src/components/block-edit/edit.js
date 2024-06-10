@@ -72,22 +72,23 @@ const EditWithGeneratedProps = ( props ) => {
 		return <EditWithFilters { ...props } context={ context } />;
 	}
 
-	// Generate a class name for the block's editable form.
-	const generatedClassName = hasBlockSupport( blockType, 'className', true )
-		? getBlockDefaultClassName( name )
-		: null;
+	const generatedClassNames = [];
 
-	const activeVariation = getActiveBlockVariation( name, attributes );
+	if ( hasBlockSupport( blockType, 'className', true ) ) {
+		generatedClassNames.push( getBlockDefaultClassName( name ) );
 
-	// Generate a class name for the block's editable form.
-	const generatedVariationClassName =
-		hasBlockSupport( blockType, 'className', true ) && activeVariation
-			? getBlockDefaultClassName( `${ name }/${ activeVariation.name }` )
-			: null;
+		const activeVariation = getActiveBlockVariation( name, attributes );
+		if ( activeVariation && activeVariation?.name ) {
+			generatedClassNames.push(
+				getBlockDefaultClassName(
+					`${ name }/${ activeVariation.name }`
+				)
+			);
+		}
+	}
 
 	const className = clsx(
-		generatedClassName,
-		generatedVariationClassName,
+		generatedClassNames,
 		attributes.className,
 		props.className
 	);
