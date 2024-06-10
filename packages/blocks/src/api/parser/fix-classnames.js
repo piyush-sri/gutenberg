@@ -1,10 +1,9 @@
 /**
  * Internal dependencies
  */
-import { hasBlockSupport } from '../registration';
+import { hasBlockSupport, getActiveBlockVariation } from '../registration';
 import { getSaveContent, getBlockDefaultClassName } from '../serializer';
 import { parseWithAttributeSchema } from './get-block-attributes';
-import { getBlockTypeActiveVariation } from '../../store/utils';
 
 const CLASS_ATTR_SCHEMA = {
 	type: 'string',
@@ -85,9 +84,8 @@ export function fixCustomClassname( blockAttributes, blockType, innerHTML ) {
  */
 export function fixVariationClassname( blockAttributes, blockType, innerHTML ) {
 	if ( hasBlockSupport( blockType, 'className', true ) ) {
-		const activeVariation = getBlockTypeActiveVariation(
-			blockType.variations,
-			blockType,
+		const activeVariation = getActiveBlockVariation(
+			blockType.name,
 			blockAttributes
 		);
 
