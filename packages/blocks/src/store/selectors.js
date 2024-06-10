@@ -174,7 +174,6 @@ export function getBlockStyles( state, name ) {
 export const getBlockVariations = createSelector(
 	( state, blockName, scope ) => {
 		const variations = state.blockVariations[ blockName ];
-
 		if ( ! variations || ! scope ) {
 			return variations;
 		}
@@ -238,6 +237,7 @@ export const getBlockVariations = createSelector(
  */
 export function getActiveBlockVariation( state, blockName, attributes, scope ) {
 	const variations = getBlockVariations( state, blockName, scope );
+
 	if ( ! variations ) {
 		return variations;
 	}
