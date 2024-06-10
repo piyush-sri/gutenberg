@@ -4,7 +4,7 @@
 import { hasBlockSupport } from '../registration';
 import { getSaveContent, getBlockDefaultClassName } from '../serializer';
 import { parseWithAttributeSchema } from './get-block-attributes';
-import { getBlockTypeActiveVariation } from '../../utils';
+import { getBlockTypeActiveVariation } from '../../store/utils';
 
 const CLASS_ATTR_SCHEMA = {
 	type: 'string',
