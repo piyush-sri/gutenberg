@@ -39,8 +39,6 @@ export function addGeneratedVariationClassName(
 
 		if ( typeof extraProps.className === 'string' ) {
 			// We have some extra classes and want to add the default classname
-			// We use uniq to prevent duplicate classnames.
-
 			extraProps.className = [
 				...new Set( [
 					getBlockDefaultClassName( variationName ),
