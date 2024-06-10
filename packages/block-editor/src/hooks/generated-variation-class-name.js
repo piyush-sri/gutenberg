@@ -59,6 +59,6 @@ export function addGeneratedVariationClassName(
 
 addFilter(
 	'blocks.getSaveContent.extraProps',
-	'core/generated-class-name/save-props',
+	'core/generated-variation-class-name/save-props',
 	addGeneratedVariationClassName
 );
