@@ -5,7 +5,7 @@ import { addFilter } from '@wordpress/hooks';
 import {
 	hasBlockSupport,
 	getBlockDefaultClassName,
-	getBlockTypeActiveVariation,
+	getActiveBlockVariation,
 } from '@wordpress/blocks';
 
 /**
@@ -26,9 +26,8 @@ export function addGeneratedVariationClassName(
 ) {
 	// Adding the generated className.
 	if ( hasBlockSupport( blockType, 'className', true ) ) {
-		const activeVariation = getBlockTypeActiveVariation(
-			blockType.variations,
-			blockType,
+		const activeVariation = getActiveBlockVariation(
+			blockType.name,
 			attributes
 		);
 
