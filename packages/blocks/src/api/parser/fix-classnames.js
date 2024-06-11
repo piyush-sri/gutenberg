@@ -99,7 +99,7 @@ export function fixVariationClassname( blockAttributes, blockType, innerHTML ) {
 
 			if ( ! hasVariationClassName ) {
 				return innerHTML.replace(
-					/(<\w+\s+class=")([^"]*)"/,
+					/(<\w+[^>]*\s+class=")([^"]*)"/,
 					`$1$2 ${ variationClassName }"`
 				);
 			}
