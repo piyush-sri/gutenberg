@@ -98,6 +98,13 @@ export function fixVariationClassname( blockAttributes, blockType, innerHTML ) {
 				actualClasses.includes( variationClassName );
 
 			if ( ! hasVariationClassName ) {
+				/**
+				  This Regex pattern matches HTML tags with a class attribute. Specifically, it matches:
+				  1. An opening tag with any attributes up to 'class="'.
+				  2. The contents of the class attribute.
+				  The replace function appends 'variationClassName' to the existing classes.
+				  For example, class="foo" becomes class="foo bar" if variationClassName is "bar".
+				 */
 				return innerHTML.replace(
 					/(<\w+[^>]*\s+class=")([^"]*)"/,
 					`$1$2 ${ variationClassName }"`
