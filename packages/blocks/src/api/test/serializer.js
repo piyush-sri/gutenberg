@@ -452,14 +452,14 @@ describe( 'block serializer', () => {
 
 	describe( 'getBlockDefaultClassName', () => {
 		it( 'should return the default class name for a block without the core namespace', () => {
-			expect( getBlockDefaultClassName( 'core/paragraph' ) ).toBe(
-				'wp-block-paragraph'
+			expect( getBlockDefaultClassName( 'core/test-block' ) ).toBe(
+				'wp-block-test-block'
 			);
 		} );
 
 		it( 'should return the default class name for a block', () => {
-			expect( getBlockDefaultClassName( 'core/paragraph' ) ).toBe(
-				'wp-block-paragraph'
+			expect( getBlockDefaultClassName( 'core/test-block' ) ).toBe(
+				'wp-block-test-block'
 			);
 			expect( getBlockDefaultClassName( 'plugin/test-block' ) ).toBe(
 				'wp-block-plugin-test-block'
@@ -467,9 +467,9 @@ describe( 'block serializer', () => {
 		} );
 
 		it( 'should return the default class name for a variant block nomenclature', () => {
-			expect( getBlockDefaultClassName( 'core/group/row' ) ).toBe(
-				'wp-block-group-row'
-			);
+			expect(
+				getBlockDefaultClassName( 'core/test-block/variant' )
+			).toBe( 'wp-block-test-block-variant' );
 			expect(
 				getBlockDefaultClassName( 'plugin/test-block/variant' )
 			).toBe( 'wp-block-plugin-test-block-variant' );
