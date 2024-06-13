@@ -10,9 +10,9 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import TypographyElements from './typography-elements';
-import TypographyVariations from './variations/variations-typography';
 import FontFamilies from './font-families';
 import ScreenHeader from './header';
+import TypesetButton from './typeset-button';
 
 function ScreenTypography() {
 	const fontLibraryEnabled = useSelect(
@@ -31,10 +31,10 @@ function ScreenTypography() {
 			/>
 			<div className="edit-site-global-styles-screen">
 				<VStack spacing={ 7 }>
+					<TypesetButton />
 					{ ! window.__experimentalDisableFontLibrary &&
 						fontLibraryEnabled && <FontFamilies /> }
 					<TypographyElements />
-					<TypographyVariations title={ __( 'Presets' ) } />
 				</VStack>
 			</div>
 		</>
