@@ -1,13 +1,8 @@
 /**
- * External dependencies
- */
-import createSelector from 'rememo';
-
-/**
  * WordPress dependencies
  */
 import { parse } from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
+import { useSelect, createSelector } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { store as editorStore } from '@wordpress/editor';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -45,6 +40,7 @@ const templatePartToPattern = ( templatePart ) => ( {
 	name: createTemplatePartId( templatePart.theme, templatePart.slug ),
 	title: decodeEntities( templatePart.title.rendered ),
 	type: templatePart.type,
+	_links: templatePart._links,
 	templatePart,
 } );
 
@@ -227,6 +223,7 @@ const convertPatternPostToItem = ( patternPost, categories ) => ( {
 	syncStatus: patternPost.wp_pattern_sync_status || PATTERN_SYNC_TYPES.full,
 	title: patternPost.title.raw,
 	type: patternPost.type,
+	description: patternPost.excerpt.raw,
 	patternPost,
 } );
 
@@ -294,21 +291,28 @@ const selectUserPatterns = createSelector(
 );
 
 export const usePatterns = (
-	categoryType,
+	postType,
 	categoryId,
 	{ search = '', syncStatus } = {}
 ) => {
 	return useSelect(
 		( select ) => {
-			if ( categoryType === TEMPLATE_PART_POST_TYPE ) {
+			if ( postType === TEMPLATE_PART_POST_TYPE ) {
 				return selectTemplatePartsAsPatterns(
 					select,
 					categoryId,
 					search
 				);
-			} else if ( categoryType === PATTERN_TYPES.theme ) {
-				return selectPatterns( select, categoryId, syncStatus, search );
-			} else if ( categoryType === PATTERN_TYPES.user ) {
+			} else if ( postType === PATTERN_TYPES.user && !! categoryId ) {
+				const appliedCategory =
+					categoryId === 'uncategorized' ? '' : categoryId;
+				return selectPatterns(
+					select,
+					appliedCategory,
+					syncStatus,
+					search
+				);
+			} else if ( postType === PATTERN_TYPES.user ) {
 				return selectUserPatterns( select, syncStatus, search );
 			}
 			return {
@@ -316,7 +320,7 @@ export const usePatterns = (
 				isResolving: false,
 			};
 		},
-		[ categoryId, categoryType, search, syncStatus ]
+		[ categoryId, postType, search, syncStatus ]
 	);
 };
 
