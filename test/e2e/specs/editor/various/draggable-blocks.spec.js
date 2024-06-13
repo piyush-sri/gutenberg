@@ -243,7 +243,7 @@ test.describe( 'Draggable block', () => {
 
 		await expect.poll( editor.getEditedPostContent )
 			.toBe( `<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group"><!-- wp:paragraph -->
+<div class="wp-block-group-group-row wp-block-group"><!-- wp:paragraph -->
 <p>2</p>
 <!-- /wp:paragraph -->
 
@@ -328,7 +328,7 @@ test.describe( 'Draggable block', () => {
 
 		await expect.poll( editor.getEditedPostContent )
 			.toBe( `<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group"><!-- wp:paragraph -->
+<div class="wp-block-group-group-row wp-block-group"><!-- wp:paragraph -->
 <p>2</p>
 <!-- /wp:paragraph -->
 
