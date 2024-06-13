@@ -15,16 +15,16 @@ import { fixCustomClassname, fixVariationClassname } from './fix-classnames';
  * @return {WPBlock} Fixed block object
  */
 export function applyBuiltInValidationFixes( block, blockType ) {
-	const updatedBlockAttributes = fixCustomClassname(
+	const newContent = fixVariationClassname(
 		block.attributes,
 		blockType,
 		block.originalContent
 	);
 
-	const newContent = fixVariationClassname(
+	const updatedBlockAttributes = fixCustomClassname(
 		block.attributes,
 		blockType,
-		block.originalContent
+		newContent
 	);
 
 	return {
