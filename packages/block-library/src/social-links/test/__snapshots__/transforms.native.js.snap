@@ -18,7 +18,7 @@ exports[`Social Icons block transforms to Columns block 1`] = `
 
 exports[`Social Icons block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:social-links -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:social-links -->
 <ul class="wp-block-social-links"><!-- wp:social-link {"url":"https://wordpress.org","service":"wordpress"} /-->
 
 <!-- wp:social-link {"service":"facebook"} /-->

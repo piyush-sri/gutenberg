@@ -34,7 +34,7 @@ exports[`Image block transformations to Gallery block 1`] = `
 
 exports[`Image block transformations to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:image {"id":1,"sizeSlug":"large","linkDestination":"media","className":"is-style-default"} -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:image {"id":1,"sizeSlug":"large","linkDestination":"media","className":"is-style-default"} -->
 <figure class="wp-block-image size-large is-style-default"><a href="https://cldup.com/cXyG__fTLN.jpg"><img src="https://cldup.com/cXyG__fTLN.jpg" alt="" class="wp-image-1"/></a><figcaption class="wp-element-caption">Mountain</figcaption></figure>
 <!-- /wp:image --></div>
 <!-- /wp:group -->"

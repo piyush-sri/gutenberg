@@ -18,7 +18,7 @@ exports[`Paragraph block transforms to Columns block 1`] = `
 
 exports[`Paragraph block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:paragraph -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:paragraph -->
 <p>Example text</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->"

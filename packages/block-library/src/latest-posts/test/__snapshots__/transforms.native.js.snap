@@ -10,6 +10,6 @@ exports[`Latest Posts block transforms to Columns block 1`] = `
 
 exports[`Latest Posts block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:latest-posts {"displayPostContent":true,"displayPostDate":true} /--></div>
+<div class="wp-block-group-group wp-block-group"><!-- wp:latest-posts {"displayPostContent":true,"displayPostDate":true} /--></div>
 <!-- /wp:group -->"
 `;

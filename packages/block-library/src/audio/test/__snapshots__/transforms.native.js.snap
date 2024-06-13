@@ -18,7 +18,7 @@ exports[`Audio block transformations to File block 1`] = `
 
 exports[`Audio block transformations to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:audio {"id":5} -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:audio {"id":5} -->
 <figure class="wp-block-audio"><audio controls src="https://cldup.com/59IrU0WJtq.mp3"></audio></figure>
 <!-- /wp:audio --></div>
 <!-- /wp:group -->"

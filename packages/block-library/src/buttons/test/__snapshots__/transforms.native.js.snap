@@ -18,7 +18,7 @@ exports[`Buttons block transforms to Columns block 1`] = `
 
 exports[`Buttons block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:buttons -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button -->
 <div class="wp-block-button"><a class="wp-block-button__link wp-element-button">Solid Button</a></div>
 <!-- /wp:button -->

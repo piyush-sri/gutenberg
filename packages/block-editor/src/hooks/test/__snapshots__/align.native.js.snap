@@ -2,19 +2,19 @@
 
 exports[`Align options for group block sets Full width option 1`] = `
 "<!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull"></div>
+<div class="wp-block-group-group wp-block-group alignfull"></div>
 <!-- /wp:group -->"
 `;
 
 exports[`Align options for group block sets None option 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"></div>
+<div class="wp-block-group-group wp-block-group"></div>
 <!-- /wp:group -->"
 `;
 
 exports[`Align options for group block sets Wide width option 1`] = `
 "<!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignwide"></div>
+<div class="wp-block-group-group wp-block-group alignwide"></div>
 <!-- /wp:group -->"
 `;
 

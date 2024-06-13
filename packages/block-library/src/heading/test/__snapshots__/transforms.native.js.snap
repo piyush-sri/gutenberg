@@ -12,7 +12,7 @@ exports[`Heading block transforms to Columns block 1`] = `
 
 exports[`Heading block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:heading -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:heading -->
 <h2 class="wp-block-heading">Example text</h2>
 <!-- /wp:heading --></div>
 <!-- /wp:group -->"

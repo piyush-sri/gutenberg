@@ -12,7 +12,7 @@ exports[`Page Break block transforms to Columns block 1`] = `
 
 exports[`Page Break block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:nextpage -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:nextpage -->
 <!--nextpage-->
 <!-- /wp:nextpage --></div>
 <!-- /wp:group -->"

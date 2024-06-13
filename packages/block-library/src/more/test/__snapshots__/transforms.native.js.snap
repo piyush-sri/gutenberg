@@ -12,7 +12,7 @@ exports[`More block transforms to Columns block 1`] = `
 
 exports[`More block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:more -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:more -->
 <!--more-->
 <!-- /wp:more --></div>
 <!-- /wp:group -->"

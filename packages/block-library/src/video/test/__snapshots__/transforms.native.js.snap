@@ -26,7 +26,7 @@ exports[`Video block transforms to File block 1`] = `
 
 exports[`Video block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:video -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:video -->
 <figure class="wp-block-video"><video controls src="https://i.cloudup.com/YtZFJbuQCE.mov"></video><figcaption class="wp-element-caption">Cloudup video</figcaption></figure>
 <!-- /wp:video --></div>
 <!-- /wp:group -->"

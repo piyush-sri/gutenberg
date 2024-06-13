@@ -22,7 +22,7 @@ exports[`List block transforms to Columns block 1`] = `
 
 exports[`List block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:list -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:list -->
 <ul class="wp-block-list"><!-- wp:list-item -->
 <li>First Item</li>
 <!-- /wp:list-item -->

@@ -12,7 +12,7 @@ exports[`Verse block transforms to Columns block 1`] = `
 
 exports[`Verse block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:verse {"textAlign":"center"} -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:verse {"textAlign":"center"} -->
 <pre class="wp-block-verse has-text-align-center">Come<br />Home.</pre>
 <!-- /wp:verse --></div>
 <!-- /wp:group -->"

@@ -2,7 +2,7 @@
 
 exports[`Columns block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:columns {"className":"gutenberg-landing\\u002d\\u002ddevelopers-columns has-2-columns"} -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:columns {"className":"gutenberg-landing\\u002d\\u002ddevelopers-columns has-2-columns"} -->
 <div class="wp-block-columns gutenberg-landing--developers-columns has-2-columns"><!-- wp:column -->
 <div class="wp-block-column"><!-- wp:paragraph {"align":"left"} -->
 <p class="has-text-align-left"><strong>Built with modern technology.</strong></p>

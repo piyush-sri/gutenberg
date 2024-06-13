@@ -12,7 +12,7 @@ exports[`Pullquote block transforms to Columns block 1`] = `
 
 exports[`Pullquote block transforms to Group block 1`] = `
 "<!-- wp:group {"layout":{"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:pullquote -->
+<div class="wp-block-group-group wp-block-group"><!-- wp:pullquote -->
 <figure class="wp-block-pullquote"><blockquote><p>One of the hardest things to do in technology is disrupt yourself.</p><cite>Matt Mullenweg</cite></blockquote></figure>
 <!-- /wp:pullquote --></div>
 <!-- /wp:group -->"
