@@ -8,7 +8,8 @@
 			"inlineLabel": false,
 			"required": false,
 			"value": "",
-			"visibilityPermissions": "all"
+			"visibilityPermissions": "all",
+			"className": "wp-block-form-input-text"
 		},
 		"innerBlocks": []
 	}
