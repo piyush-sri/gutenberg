@@ -4,7 +4,9 @@
 import { parseRawBlock, default as parse } from '../';
 import {
 	registerBlockType,
+	registerBlockVariation,
 	unregisterBlockType,
+	unregisterBlockVariation,
 	getBlockTypes,
 	setFreeformContentHandlerName,
 	setUnregisteredTypeHandlerName,
@@ -80,6 +82,52 @@ describe( 'block parser', () => {
 				fruit: 'Bananas',
 				className: 'custom-class another-custom-class',
 			} );
+		} );
+
+		it( 'should apply fixVariationClassname block validation fixes', () => {
+			registerBlockType( 'core/test-block', {
+				...defaultBlockSettings,
+				attributes: {
+					fruit: {
+						type: 'string',
+						default: 'Bananas',
+						source: 'text',
+						selector: 'div',
+					},
+				},
+				save: ( { attributes } ) => (
+					// eslint-disable-next-line react/no-unknown-property
+					<div class={ attributes.className }>
+						{ attributes.fruit }
+					</div>
+				),
+			} );
+
+			registerBlockVariation( 'core/test-block', {
+				name: 'variation',
+				title: 'Variation',
+				attributes: {
+					fruit: {
+						type: 'string',
+						default: 'Apples',
+						source: 'text',
+						selector: 'div',
+					},
+				},
+				isActive: ( { fruit } ) => fruit === 'Apples',
+			} );
+
+			const block = parseRawBlock( {
+				blockName: 'core/test-block',
+				innerHTML: '<div class="wp-block-test-block">Apples</div>',
+				attrs: { fruit: 'Apples' },
+			} );
+
+			expect( block.name ).toEqual( 'core/test-block' );
+			expect( block.originalContent ).toContain(
+				'wp-block-test-block-variation'
+			);
+			unregisterBlockVariation( 'core/test-block', 'variation' );
 		} );
 
 		it( 'should create the requested block if it exists', () => {
