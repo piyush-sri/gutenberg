@@ -34,6 +34,7 @@ import {
 	batchInstallFontFaces,
 	checkFontFaceInstalled,
 } from './utils';
+import { getAvailableFontsOutline } from './utils/fonts-outline';
 import { toggleFont } from './utils/toggleFont';
 import setNestedValue from '../../../utils/set-nested-value';
 
@@ -161,42 +162,14 @@ function FontLibraryProvider( { children } ) {
 	// Demo
 	const [ loadedFontUrls ] = useState( new Set() );
 
-	const getAvailableFontsOutline = ( availableFontFamilies ) => {
-		const outline = availableFontFamilies.reduce( ( acc, font ) => {
-			const availableFontFaces =
-				font?.fontFace && font.fontFace?.length > 0
-					? font?.fontFace.map(
-							( face ) => `${ face.fontStyle + face.fontWeight }`
-					  )
-					: [ 'normal400' ]; // If the font doesn't have fontFace, we assume it is a system font and we add the defaults: normal 400
-
-			acc[ font.slug ] = availableFontFaces;
-			return acc;
-		}, {} );
-		return outline;
-	};
-
-	const getActivatedFontsOutline = ( source ) => {
-		switch ( source ) {
-			case 'theme':
-				return getAvailableFontsOutline( themeFonts );
-			case 'custom':
-			default:
-				return getAvailableFontsOutline( customFonts );
-		}
-	};
-
 	const isFontActivated = ( slug, style, weight, source ) => {
+		const sourceFonts = source === 'theme' ? themeFonts : customFonts;
 		if ( ! style && ! weight ) {
-			return !! getActivatedFontsOutline( source )[ slug ];
+			return !! getAvailableFontsOutline( sourceFonts )[ slug ];
 		}
-		return !! getActivatedFontsOutline( source )[ slug ]?.includes(
+		return !! getAvailableFontsOutline( sourceFonts )[ slug ]?.includes(
 			style + weight
 		);
-	};
-
-	const getFontFacesActivated = ( slug, source ) => {
-		return getActivatedFontsOutline( source )[ slug ] || [];
 	};
 
 	async function installFonts( fontFamiliesToInstall ) {
@@ -385,7 +358,19 @@ function FontLibraryProvider( { children } ) {
 	};
 
 	const activateCustomFontFamilies = ( fontsToAdd ) => {
-		const fontsToActivate = cleanFontsForSave( fontsToAdd );
+		// Removes the id from the families and faces to avoid saving that to global styles post content.
+		const fontsToActivate = fontsToAdd.map(
+			( { id: _familyDbId, fontFace, ...font } ) => ( {
+				...font,
+				...( fontFace && fontFace.length > 0
+					? {
+							fontFace: fontFace.map(
+								( { id: _faceDbId, ...face } ) => face
+							),
+					  }
+					: {} ),
+			} )
+		);
 
 		const activeFonts = {
 			...fontFamilies,
@@ -396,28 +381,8 @@ function FontLibraryProvider( { children } ) {
 		// Activate the fonts by set the new custom fonts array.
 		setFontFamilies( activeFonts );
 
-		loadFontsInBrowser( fontsToActivate );
-
-		return activeFonts;
-	};
-
-	// Removes the id from the families and faces to avoid saving that to global styles post content.
-	const cleanFontsForSave = ( fonts ) => {
-		return fonts.map( ( { id: _familyDbId, fontFace, ...font } ) => ( {
-			...font,
-			...( fontFace && fontFace.length > 0
-				? {
-						fontFace: fontFace.map(
-							( { id: _faceDbId, ...face } ) => face
-						),
-				  }
-				: {} ),
-		} ) );
-	};
-
-	const loadFontsInBrowser = ( fonts ) => {
 		// Add custom fonts to the browser.
-		fonts.forEach( ( font ) => {
+		fontsToActivate.forEach( ( font ) => {
 			if ( font.fontFace ) {
 				font.fontFace.forEach( ( face ) => {
 					// Load font faces just in the iframe because they already are in the document.
@@ -429,6 +394,7 @@ function FontLibraryProvider( { children } ) {
 				} );
 			}
 		} );
+		return activeFonts;
 	};
 
 	const toggleActivateFont = ( font, face ) => {
@@ -515,15 +481,11 @@ function FontLibraryProvider( { children } ) {
 			value={ {
 				libraryFontSelected,
 				handleSetLibraryFontSelected,
-				fontFamilies,
 				baseCustomFonts,
-				isFontActivated,
-				getFontFacesActivated,
 				loadFontFaceAsset,
 				installFonts,
 				uninstallFontFamily,
 				toggleActivateFont,
-				getAvailableFontsOutline,
 				modalTabOpen,
 				setModalTabOpen,
 				refreshLibrary,

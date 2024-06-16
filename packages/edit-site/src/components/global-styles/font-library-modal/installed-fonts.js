@@ -31,6 +31,7 @@ import { FontLibraryContext } from './context';
 import FontCard from './font-card';
 import LibraryFontVariant from './library-font-variant';
 import { sortFontFaces } from './utils/sort-font-faces';
+import { getAvailableFontsOutline } from './utils/fonts-outline';
 import { setUIValuesNeeded } from './utils';
 import { unlock } from '../../../lock-unlock';
 
@@ -46,12 +47,11 @@ function InstalledFonts() {
 		isResolvingLibrary,
 		isInstalling,
 		saveFontFamilies,
-		getFontFacesActivated,
 		notice,
 		setNotice,
-		fontFamilies,
 	} = useContext( FontLibraryContext );
 	const [ isConfirmDeleteOpen, setIsConfirmDeleteOpen ] = useState( false );
+	const [ fontFamilies ] = useGlobalSetting( 'typography.fontFamilies' );
 	const [ baseFontFamilies ] = useGlobalSetting(
 		'typography.fontFamilies',
 		undefined,
@@ -76,6 +76,11 @@ function InstalledFonts() {
 				.sort( ( a, b ) => a.name.localeCompare( b.name ) )
 		: [];
 	const themeFontsSlugs = new Set( themeFonts.map( ( f ) => f.slug ) );
+	const customFonts = fontFamilies?.custom
+		? fontFamilies.custom
+				.map( ( f ) => setUIValuesNeeded( f, { source: 'custom' } ) )
+				.sort( ( a, b ) => a.name.localeCompare( b.name ) )
+		: [];
 	const baseThemeFonts = baseFontFamilies?.theme
 		? themeFonts.concat(
 				baseFontFamilies.theme
@@ -106,6 +111,11 @@ function InstalledFonts() {
 
 	const handleUninstallClick = () => {
 		setIsConfirmDeleteOpen( true );
+	};
+
+	const getFontFacesActivated = ( slug, source ) => {
+		const sourceFonts = source === 'theme' ? themeFonts : customFonts;
+		return getAvailableFontsOutline( sourceFonts )[ slug ] || [];
 	};
 
 	const getFontFacesToDisplay = ( font ) => {
