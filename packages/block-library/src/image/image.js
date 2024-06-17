@@ -967,7 +967,10 @@ export default function Image( {
 				isSelected={ isSingleSelected }
 				insertBlocksAfter={ insertBlocksAfter }
 				label={ __( 'Image caption text' ) }
-				showToolbarButton={ isSingleSelected && hasNonContentControls }
+				showToolbarButton={
+					isSingleSelected &&
+					( hasNonContentControls || isContentOnlyMode )
+				}
 				readOnly={ lockCaption }
 			/>
 		</>
