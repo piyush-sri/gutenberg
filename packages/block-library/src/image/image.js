@@ -471,10 +471,6 @@ export default function Image( {
 					// Disable editing the link of the URL if the image is inside a pattern instance.
 					// This is a temporary solution until we support overriding the link on the frontend.
 					hasParentPattern,
-				lockCaption:
-					// Disable editing the caption if the image is inside a pattern instance.
-					// This is a temporary solution until we support overriding the caption on the frontend.
-					hasParentPattern,
 				lockAltControls:
 					!! altBinding &&
 					! altBindingSource?.canUserEditValue( {
