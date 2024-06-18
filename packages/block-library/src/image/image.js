@@ -434,6 +434,7 @@ export default function Image( {
 		lockTitleControls = false,
 		lockTitleControlsMessage,
 		lockCaption = false,
+		hideCaptionControls = false,
 	} = useSelect(
 		( select ) => {
 			if ( ! isSingleSelected ) {
@@ -443,10 +444,12 @@ export default function Image( {
 			const { getBlockParentsByBlockName } = unlock(
 				select( blockEditorStore )
 			);
+
 			const {
 				url: urlBinding,
 				alt: altBinding,
 				title: titleBinding,
+				caption: captionBinding,
 			} = metadata?.bindings || {};
 			const hasParentPattern =
 				getBlockParentsByBlockName( clientId, 'core/block' ).length > 0;
@@ -458,6 +461,9 @@ export default function Image( {
 			);
 			const titleBindingSource = getBlockBindingsSource(
 				titleBinding?.source
+			);
+			const captionBindingSource = getBlockBindingsSource(
+				captionBinding?.source
 			);
 			return {
 				lockUrlControls:
@@ -499,6 +505,13 @@ export default function Image( {
 							titleBindingSource.label
 					  )
 					: __( 'Connected to dynamic data' ),
+				hideCaptionControls:
+					captionBinding ||
+					! captionBindingSource?.canUserEditValue( {
+						select,
+						context,
+						args: captionBinding?.args,
+					} ),
 			};
 		},
 		[ clientId, isSingleSelected, metadata?.bindings ]
@@ -969,7 +982,8 @@ export default function Image( {
 				label={ __( 'Image caption text' ) }
 				showToolbarButton={
 					isSingleSelected &&
-					( hasNonContentControls || isContentOnlyMode )
+					( hasNonContentControls || isContentOnlyMode ) &&
+					! hideCaptionControls
 				}
 				readOnly={ lockCaption }
 			/>
