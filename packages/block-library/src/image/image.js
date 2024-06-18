@@ -462,9 +462,7 @@ export default function Image( {
 			const titleBindingSource = getBlockBindingsSource(
 				titleBinding?.source
 			);
-			const captionBindingSource = getBlockBindingsSource(
-				captionBinding?.source
-			);
+
 			return {
 				lockUrlControls:
 					!! urlBinding &&
@@ -505,13 +503,7 @@ export default function Image( {
 							titleBindingSource.label
 					  )
 					: __( 'Connected to dynamic data' ),
-				hideCaptionControls:
-					captionBinding ||
-					! captionBindingSource?.canUserEditValue( {
-						select,
-						context,
-						args: captionBinding?.args,
-					} ),
+				hideCaptionControls: !! captionBinding,
 			};
 		},
 		[ clientId, isSingleSelected, metadata?.bindings ]
