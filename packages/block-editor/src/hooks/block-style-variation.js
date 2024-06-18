@@ -43,7 +43,7 @@ function getVariationNameFromClass( className, registeredStyles = [] ) {
 	return null;
 }
 
-function useBlockSyleVariation( name, variation, clientId ) {
+function useBlockStyleVariation( name, variation, clientId ) {
 	// Prefer global styles data in GlobalStylesContext, which are available
 	// if in the site editor. Otherwise fall back to whatever is in the
 	// editor settings and available in the post editor.
@@ -96,7 +96,7 @@ function useBlockProps( { name, className, clientId } ) {
 	const variation = getVariationNameFromClass( className, registeredStyles );
 	const variationClass = `is-style-${ variation }-${ clientId }`;
 
-	const { settings, styles } = useBlockSyleVariation(
+	const { settings, styles } = useBlockStyleVariation(
 		name,
 		variation,
 		clientId
@@ -116,7 +116,7 @@ function useBlockProps( { name, className, clientId } ) {
 		const hasBlockGapSupport = false;
 		const hasFallbackGapSupport = true;
 		const disableLayoutStyles = true;
-		const isTemplate = true;
+		const disableRootPadding = true;
 
 		return toStyles(
 			variationConfig,
@@ -124,7 +124,7 @@ function useBlockProps( { name, className, clientId } ) {
 			hasBlockGapSupport,
 			hasFallbackGapSupport,
 			disableLayoutStyles,
-			isTemplate,
+			disableRootPadding,
 			{
 				blockGap: false,
 				blockStyles: true,
@@ -132,6 +132,7 @@ function useBlockProps( { name, className, clientId } ) {
 				marginReset: false,
 				presets: false,
 				rootPadding: false,
+				variationStyles: true,
 			}
 		);
 	}, [ variation, settings, styles, getBlockStyles, clientId ] );
