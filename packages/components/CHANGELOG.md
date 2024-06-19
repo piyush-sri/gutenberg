@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+### Enhancements
+
+- Add Button support for iconPosition top and showDescription. ([#62412](https://github.com/WordPress/gutenberg/pull/62412))
+
 ## 28.1.0 (2024-06-15)
 
 ### Enhancements
 
-- Add Button support for iconPosition top and showDescription. ([#62412](https://github.com/WordPress/gutenberg/pull/62412))
 - Add `text-wrap: balance` fallback to all instances of `text-wrap: pretty` for greater cross browser compatibility. ([#62233](https://github.com/WordPress/gutenberg/pull/62233))
 - Updates the space between input + label to `8px` in CheckboxControl and RadioControl. Also increased the space between RadioControl components to `12px` to make it consistent with CheckboxControl. ([#61696](https://github.com/WordPress/gutenberg/pull/61696))
 
