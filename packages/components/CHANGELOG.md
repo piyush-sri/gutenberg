@@ -9,6 +9,7 @@
 ### Internal
 
 -   CustomSelectControl: align unit tests for v1 and legacy v2 versions. ([#62706](https://github.com/WordPress/gutenberg/pull/62706))
+-   Method style type signatures have been changed to function style ([#62718](https://github.com/WordPress/gutenberg/pull/62718)).
 
 ## 28.1.0 (2024-06-15)
 
