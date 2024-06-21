@@ -1,8 +1,3 @@
-/**
- * WordPress dependencies
- */
-import type { AnyItem } from '@wordpress/dataviews';
-
 type PostStatus =
 	| 'published'
 	| 'draft'
@@ -12,6 +7,6 @@ type PostStatus =
 	| 'auto-draft'
 	| 'trash';
 
-export interface Post extends AnyItem {
+export interface Post {
 	status: PostStatus;
 }

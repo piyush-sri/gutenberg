@@ -46,7 +46,6 @@ import {
 } from './bulk-actions';
 import type {
 	Action,
-	AnyItem,
 	NormalizedField,
 	SortDirection,
 	ViewTable as ViewTableType,
@@ -62,7 +61,7 @@ const {
 	DropdownMenuSeparatorV2: DropdownMenuSeparator,
 } = unlock( componentsPrivateApis );
 
-interface HeaderMenuProps< Item extends AnyItem > {
+interface HeaderMenuProps< Item > {
 	field: NormalizedField< Item >;
 	view: ViewTableType;
 	onChangeView: ( view: ViewTableType ) => void;
@@ -70,14 +69,14 @@ interface HeaderMenuProps< Item extends AnyItem > {
 	setOpenedFilter: ( fieldId: string ) => void;
 }
 
-interface BulkSelectionCheckboxProps< Item extends AnyItem > {
+interface BulkSelectionCheckboxProps< Item > {
 	selection: string[];
 	onSelectionChange: ( items: Item[] ) => void;
 	data: Item[];
 	actions: Action< Item >[];
 }
 
-interface TableRowProps< Item extends AnyItem > {
+interface TableRowProps< Item > {
 	hasBulkActions: boolean;
 	item: Item;
 	actions: Action< Item >[];
@@ -101,7 +100,7 @@ function WithDropDownMenuSeparators( { children }: { children: ReactNode } ) {
 		) );
 }
 
-const _HeaderMenu = forwardRef( function HeaderMenu< Item extends AnyItem >(
+const _HeaderMenu = forwardRef( function HeaderMenu< Item >(
 	{
 		field,
 		view,
@@ -239,12 +238,12 @@ const _HeaderMenu = forwardRef( function HeaderMenu< Item extends AnyItem >(
 } );
 
 // @ts-expect-error Lift the `Item` type argument through the forwardRef.
-const HeaderMenu: < Item extends AnyItem >(
+const HeaderMenu: < Item >(
 	props: PropsWithoutRef< HeaderMenuProps< Item > > &
 		RefAttributes< HTMLButtonElement >
 ) => ReturnType< typeof _HeaderMenu > = _HeaderMenu;
 
-function BulkSelectionCheckbox< Item extends AnyItem >( {
+function BulkSelectionCheckbox< Item >( {
 	selection,
 	onSelectionChange,
 	data,
@@ -280,7 +279,7 @@ function BulkSelectionCheckbox< Item extends AnyItem >( {
 	);
 }
 
-function TableRow< Item extends AnyItem >( {
+function TableRow< Item >( {
 	hasBulkActions,
 	item,
 	actions,
@@ -415,7 +414,7 @@ function TableRow< Item extends AnyItem >( {
 	);
 }
 
-function ViewTable< Item extends AnyItem >( {
+function ViewTable< Item >( {
 	actions,
 	data,
 	fields,

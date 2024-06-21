@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import type { Field, AnyItem, NormalizedField } from './types';
+import type { Field, NormalizedField } from './types';
 
 /**
  * Apply default values and normalize the fields config.
@@ -9,7 +9,7 @@ import type { Field, AnyItem, NormalizedField } from './types';
  * @param fields Fields config.
  * @return Normalized fields config.
  */
-export function normalizeFields< Item extends AnyItem >(
+export function normalizeFields< Item >(
 	fields: Field< Item >[]
 ): NormalizedField< Item >[] {
 	return fields.map( ( field ) => {
