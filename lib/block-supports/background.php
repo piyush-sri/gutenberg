@@ -95,6 +95,16 @@ function gutenberg_render_background_support( $block_content, $block ) {
 
 			// Remove any existing background color if a background image and gradient is set.
 			if ( ! empty( $background_gradient_styles['gradient'] ) && ! empty( $background_styles ) ) {
+                // This is just testing. The style engine should be smart enough to remove the classname for a preset, where
+                // it's used in the CSS string.
+                // And this is done in the site editor when editing the block.
+				if ( ! empty( $styles['classnames'] ) && $preset_gradient_color ) {
+					foreach ( explode( ' ', $styles['classnames'] ) as $class_name ) {
+						if ( 'has-background' !== $class_name ) {
+							$tags->remove_class( $class_name );
+						}
+					}
+				}
 				$existing_style = preg_replace( '/background\s*:\s*' . preg_quote( $background_gradient_styles['gradient'], '/' ) . '\s*;?/', '', $existing_style, 1 );
 			}
 
