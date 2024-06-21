@@ -375,7 +375,7 @@ export interface ViewBaseProps< Item extends AnyItem > {
 	fields: NormalizedField< Item >[];
 	getItemId: ( item: Item ) => string;
 	isLoading?: boolean;
-	onChangeView( view: View ): void;
+	onChangeView: ( view: View ) => void;
 	onSelectionChange: ( items: Item[] ) => void;
 	selection: string[];
 	setOpenedFilter: ( fieldId: string ) => void;
