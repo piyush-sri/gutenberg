@@ -508,13 +508,7 @@ export default function Image( {
 					: __( 'Connected to dynamic data' ),
 			};
 		},
-		[
-			arePatternOverridesEnabled,
-			clientId,
-			context,
-			isSingleSelected,
-			metadata?.bindings,
-		]
+		[ clientId, isSingleSelected, metadata?.bindings ]
 	);
 
 	const showUrlInput =
