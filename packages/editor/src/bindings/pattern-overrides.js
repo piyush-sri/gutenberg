@@ -51,7 +51,7 @@ export default {
 		return overridableValue === '' ? undefined : overridableValue;
 	},
 	setValues( { registry, clientId, attributes } ) {
-		const { getBlockAttributes, getBlockParentsByBlockName, getBlocks } =
+		const { getBlockAttributes, getBlockParentsByBlockName } =
 			registry.select( blockEditorStore );
 		const currentBlockAttributes = getBlockAttributes( clientId );
 		const blockName = currentBlockAttributes?.metadata?.name;
@@ -65,25 +65,6 @@ export default {
 			true
 		);
 
-		// If there is no pattern client ID, sync blocks with the same name and same attributes.
-		if ( ! patternClientId ) {
-			const syncBlocksWithSameName = ( blocks ) => {
-				for ( const block of blocks ) {
-					if ( block.attributes?.metadata?.name === blockName ) {
-						registry
-							.dispatch( blockEditorStore )
-							.updateBlockAttributes(
-								block.clientId,
-								attributes
-							);
-					}
-					syncBlocksWithSameName( block.innerBlocks );
-				}
-			};
-
-			syncBlocksWithSameName( getBlocks() );
-			return;
-		}
 		const currentBindingValue =
 			getBlockAttributes( patternClientId )?.[ CONTENT ];
 		registry
