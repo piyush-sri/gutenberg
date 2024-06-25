@@ -238,8 +238,13 @@ export const withBlockBindingSupport = createHigherOrderComponent(
 						}
 					}
 
-					// Apply regular unbound attribute updates.
-					if ( Object.keys( keptAttributes ).length ) {
+					// Only apply normal attribute updates to blocks
+					// that have partial bindings. Currently this is
+					// only skipped for pattern overrides sources.
+					if (
+						! hasPatternOverridesDefaultBinding &&
+						Object.keys( keptAttributes ).length
+					) {
 						setAttributes( keptAttributes );
 					}
 				} );
@@ -252,6 +257,7 @@ export const withBlockBindingSupport = createHigherOrderComponent(
 				context,
 				setAttributes,
 				sources,
+				hasPatternOverridesDefaultBinding,
 			]
 		);
 
