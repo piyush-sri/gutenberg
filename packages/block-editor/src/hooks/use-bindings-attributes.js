@@ -112,23 +112,15 @@ export const withBlockBindingSupport = createHigherOrderComponent(
 			)
 		);
 		const hasPatternOverridesDefaultBinding =
-			!! sources[ 'core/pattern-overrides' ] &&
 			props.attributes.metadata?.bindings?.[ DEFAULT_ATTRIBUTE ]
 				?.source === 'core/pattern-overrides';
-
 		const bindings = useMemo(
 			() =>
-				hasPatternOverridesDefaultBinding
-					? replacePatternOverrideDefaultBindings(
-							name,
-							props.attributes.metadata?.bindings
-					  )
-					: props.attributes.metadata?.bindings,
-			[
-				hasPatternOverridesDefaultBinding,
-				props.attributes.metadata?.bindings,
-				name,
-			]
+				replacePatternOverrideDefaultBindings(
+					name,
+					props.attributes.metadata?.bindings
+				),
+			[ props.attributes.metadata?.bindings, name ]
 		);
 		const boundAttributes = useMemo( () => {
 			if ( ! bindings ) {
