@@ -3,12 +3,31 @@
  */
 import { _x } from '@wordpress/i18n';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { privateApis as blocksPrivateApis } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import { unlock } from '../lock-unlock';
+
+const { isBindingSourceActiveKey } = unlock( blocksPrivateApis );
 
 const CONTENT = 'content';
 
 export default {
 	name: 'core/pattern-overrides',
 	label: _x( 'Pattern Overrides', 'block bindings source' ),
+	[ isBindingSourceActiveKey ]: ( { registry, clientId } ) => {
+		const { getBlockParentsByBlockName } =
+			registry.select( blockEditorStore );
+		const [ patternClientId ] = getBlockParentsByBlockName(
+			clientId,
+			'core/block',
+			true
+		);
+
+		return !! patternClientId;
+	},
 	getValue( { registry, clientId, attributeName } ) {
 		const { getBlockAttributes, getBlockParentsByBlockName } =
 			registry.select( blockEditorStore );
