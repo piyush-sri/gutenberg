@@ -118,11 +118,17 @@ export const withBlockBindingSupport = createHigherOrderComponent(
 
 		const bindings = useMemo(
 			() =>
-				replacePatternOverrideDefaultBindings(
-					name,
-					props.attributes.metadata?.bindings
-				),
-			[ props.attributes.metadata?.bindings, name ]
+				hasPatternOverridesDefaultBinding
+					? replacePatternOverrideDefaultBindings(
+							name,
+							props.attributes.metadata?.bindings
+					  )
+					: props.attributes.metadata?.bindings,
+			[
+				hasPatternOverridesDefaultBinding,
+				props.attributes.metadata?.bindings,
+				name,
+			]
 		);
 		const boundAttributes = useSelect( () => {
 			if ( ! bindings ) {
